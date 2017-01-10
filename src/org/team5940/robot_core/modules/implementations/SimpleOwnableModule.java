@@ -3,19 +3,17 @@ package org.team5940.robot_core.modules.implementations;
 import org.team5940.robot_core.modules.interfaces.OwnableModule;
 
 public abstract class SimpleOwnableModule implements OwnableModule {
-	Thread t;
-	String nameOfModule = "SimpleOwnableModule";
+	Thread t;//I would call this something more obvious.
+	String nameOfModule = "SimpleOwnableModule";//Name should be determined by an argument in a constructor
 
 	@Override
 	public synchronized String getName() {
-		// TODO Auto-generated method stub
 		return nameOfModule;
 	}
 
 	@Override
 	public synchronized boolean isOwnedBy(Thread t) {
-		// TODO Auto-generated method stub
-		this.t = t;
+		this.t = t;//What? Why are setting an object variable to the argument when checking
 		if (this.t == t.currentThread()) {
 			return true;
 		} else if (this.t == null) {
