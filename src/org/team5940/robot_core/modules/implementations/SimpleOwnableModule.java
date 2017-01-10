@@ -43,7 +43,10 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	@Override
 	public boolean relinquishOwnershipFor(Thread t) {
 		// TODO Auto-generated method stub
-		return false;
+		if (this.isOwnedBy(t)==true){
+			currentOwner=null;
+		}
+		return this.isOwnedBy(t);
 	}
 
 }
