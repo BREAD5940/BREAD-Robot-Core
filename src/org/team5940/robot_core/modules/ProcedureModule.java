@@ -8,46 +8,45 @@ public interface ProcedureModule extends Module {
 	public enum ProcedureState {
 		
 		/**
-		 * Procedure is running
+		 * Procedure is running.
 		 */
 		RUNNING, 
 		
 		/**
-		 * Procedure has not been started yet
+		 * Procedure has not been started since initialization.
 		 */
 		NOT_STARTED, 
 		
 		/**
-		 * Procedure is finished
+		 * Procedure has finished executing normally.
 		 */
 		FINISHED, 
 		
 		/**
-		 * Procedure was interrupted prematurely
+		 * Procedure was interrupted prematurely.
 		 */
 		INTERRUPTED, 
 		
 		/**
-		 * Procedure had an error
+		 * Procedure had an error and is not running.
 		 */
 		ERROR
 		
 	}
 	
 	/**
-	 * Starts the procedure
-	 * @return if it was able to start it
+	 * Starts the procedure if it was not already running. If procedure is newly starting, shouldn't return until the Procedure has entered the RUNNING state.
 	 */
-	public boolean start();
+	public void start();
 
 	/**
-	 * Stops the procedure prematurely
-	 * @return if it was currently running
+	 * Interrupts the procedure prematurely if it is currently running. If procedure is newly stopping, shouldn't return until the Procedure has entered the INTERRUPTED state.
 	 */
-	public boolean stop();
+	public boolean interrupt();
 
 	/**
-	 * @return the current state
+	 * Returns the current state of this Procedure.
+	 * @return A ProcedureState representing the current state of this ProcedureModule.
 	 * @see ProcedureState
 	 */
 	public ProcedureState getState();
