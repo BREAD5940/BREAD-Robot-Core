@@ -4,6 +4,7 @@ import org.team5940.robot_core.modules.interfaces.OwnableModule;
 
 public abstract class SimpleOwnableModule implements OwnableModule {
 	Thread t;
+	Thread currentOwner;
 	String nameOfModule = "SimpleOwnableModule";
 
 	@Override
@@ -16,7 +17,7 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	public synchronized boolean isOwnedBy(Thread t) {
 		// TODO Auto-generated method stub
 		this.t = t;
-		if (this.t == t.currentThread()) {
+		if (this.t == currentOwner) {
 			return true;
 		} else if (this.t == null) {
 			return true;
@@ -29,8 +30,14 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	@Override
 	public boolean aquireOwnershipFor(Thread t, boolean force) {
 		// TODO Auto-generated method stub
+		this.t = t;
+		if (currentOwner == null){
+			this.t = currentOwner;
+		} else if (force == true){
+			this.t = currentOwner;
+		}
 		
-		return false;
+		return this.isOwnedBy(t);
 	}
 
 	@Override
