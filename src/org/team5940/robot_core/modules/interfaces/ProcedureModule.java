@@ -1,5 +1,7 @@
 package org.team5940.robot_core.modules.interfaces;
 
+import org.team5940.robot_core.modules.Module;
+
 public interface ProcedureModule extends Module {
 	
 	/**
