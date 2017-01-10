@@ -11,4 +11,7 @@ public interface Module {
 	 * @return The name of the instance of this Module.
 	 */
 	public String getName();
+	
+	public ModuleList getSubModules();
+	
 }
