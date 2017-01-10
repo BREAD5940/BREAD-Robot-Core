@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules;
+package org.team5940.robot_core.modules.interfaces;
 
 /**
  * This ThreadNotAuthorizedException should be thrown by implementations of OwnableModule if methods are accessed by a Thread when another Thread owns it.

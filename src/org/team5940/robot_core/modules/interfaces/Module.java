@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules;
+package org.team5940.robot_core.modules.interfaces;
 
 /**
  * A module is the basic building block of robot code in BREAD's Robot Core. Anything that implements this interface should represent some part of the robot, whether a sensor, actuator, piece of code or even more complicated systems (e.g. the drivetrain). Actual functionality for a module should be given by interfaces that extend this interface.

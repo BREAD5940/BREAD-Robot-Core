@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules;
+package org.team5940.robot_core.modules.interfaces;
 
 /**
  * This extension of Module provides the interface to lock access to a Module to a particular Thread. This is useful in preventing unintentional concurrent usage, particularly of actuators.
