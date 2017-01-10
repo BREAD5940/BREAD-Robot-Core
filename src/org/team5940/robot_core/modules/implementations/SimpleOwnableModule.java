@@ -3,8 +3,9 @@ package org.team5940.robot_core.modules.implementations;
 import org.team5940.robot_core.modules.interfaces.OwnableModule;
 
 public abstract class SimpleOwnableModule implements OwnableModule {
-	Thread t;//I would call this something more obvious.
-	String nameOfModule = "SimpleOwnableModule";//Name should be determined by an argument in a constructor
+	Thread t;
+	Thread currentOwner;
+	String nameOfModule = "SimpleOwnableModule";
 
 	@Override
 	public synchronized String getName() {
@@ -15,6 +16,7 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	public synchronized boolean isOwnedBy(Thread t) {
 		this.t = t;//What? Why are setting an object variable to the argument when checking
 		if (this.t == t.currentThread()) {
+
 			return true;
 		} else if (this.t == null) {
 			return true;
@@ -27,14 +29,23 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	@Override
 	public boolean aquireOwnershipFor(Thread t, boolean force) {
 		// TODO Auto-generated method stub
+		this.t = t;
+		if (currentOwner == null){
+			this.t = currentOwner;
+		} else if (force == true){
+			this.t = currentOwner;
+		}
 		
-		return false;
+		return this.isOwnedBy(t);
 	}
 
 	@Override
 	public boolean relinquishOwnershipFor(Thread t) {
 		// TODO Auto-generated method stub
-		return false;
+		if (this.isOwnedBy(t)==true){
+			currentOwner=null;
+		}
+		return this.isOwnedBy(t);
 	}
 
 }
