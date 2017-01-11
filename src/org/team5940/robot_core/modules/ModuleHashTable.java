@@ -1,9 +1,9 @@
 package org.team5940.robot_core.modules;
 
+import java.lang.reflect.Array;
 import java.util.Hashtable;
-import java.util.function.Consumer;
 
-public class ModuleHashTable extends Hashtable<String, Module> {//TODO add generics so can specify extention of Module
+public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//TODO add generics so can specify extention of Module
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -18,10 +18,10 @@ public class ModuleHashTable extends Hashtable<String, Module> {//TODO add gener
 	 * Creates a new ModuleList with initModules and the keys them.getName().
 	 * @param initModules The modules in this ModuleList.
 	 */
-	public ModuleHashTable(Module[] initModules) {
+	public ModuleHashTable(T[] initModules) {
 		super();
 		for(int i = 0; i < initModules.length; i++) {
-			Module module = initModules[i];
+			T module = initModules[i];
 			this.put(module.getName(), module);
 		}
 	}
@@ -31,17 +31,17 @@ public class ModuleHashTable extends Hashtable<String, Module> {//TODO add gener
 	 * @param parent The class that you want Modules to be assignable from. 
 	 * @return A ModuleList containing direct submodules that are assignable from parent.
 	 */
-	public ModuleHashTable getDirectSubModulesAssignableFrom(Class<? extends Module> parent) {
-		ModuleHashTable out = new ModuleHashTable();
+	public ModuleHashTable<T> getDirectSubModulesAssignableFrom(Class<? extends Module> parent) {
+		ModuleHashTable<T> out = new ModuleHashTable<T>();
 		
-		this.values().forEach(new Consumer<Module>() {
-
-			@Override
-			public void accept(Module t) {
-				if(t.getClass().isAssignableFrom(parent)) out.put(t.getName(), t);
-			}
-			
-		});
+		@SuppressWarnings("unchecked")
+        T[] modules = (T[]) Array.newInstance(Module.class, 0);
+		modules = this.values().toArray(modules);
+		
+		for(int i = 0; i < modules.length; i++) {
+			T module = modules[i];
+			this.put(module.getName(), module);
+		}
 		
 		return out;
 	}
@@ -51,26 +51,19 @@ public class ModuleHashTable extends Hashtable<String, Module> {//TODO add gener
 	 * @param parent The class that you want Modules to be assignable from. 
 	 * @return A ModuleList containing all submodules that are assignable from parent.
 	 */
-	public ModuleHashTable getAllSubModulesAssignableFrom(Class<? extends Module> parent) {
-		ModuleHashTable out = new ModuleHashTable();
+	public ModuleHashTable<T> getAllSubModulesAssignableFrom(Class<? extends Module> parent) {
+		ModuleHashTable<T> out = new ModuleHashTable<T>();
 		
-		this.values().forEach(new Consumer<Module>() {
-
-			@Override
-			public void accept(Module t) {
-				if(t.getClass().isAssignableFrom(parent)) out.put(t.getName(), t);
-				ModuleHashTable subsAssignable = t.getSubModules().getAllSubModulesAssignableFrom(parent);
-				subsAssignable.values().forEach(new Consumer<Module>() {
-
-					@Override
-					public void accept(Module t) {
-						out.put(t.getName(), t);
-					}
-					
-				});
-			}
+		@SuppressWarnings("unchecked")
+        T[] modules = (T[]) Array.newInstance(Module.class, 0);
+		modules = this.values().toArray(modules);
+		
+		for(int i = 0; i < modules.length; i++) {
+			T module = modules[i];
+			this.put(module.getName(), module);
+			//TODO add submodules
 			
-		});
+		}
 		
 		return out;
 	}
