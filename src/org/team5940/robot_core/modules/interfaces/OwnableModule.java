@@ -43,5 +43,5 @@ public interface OwnableModule extends Module {
 	 * @return true if t owns this, false otherwise.
 	 * @throws IllegalArgumentException If t == null. To force relinquishing for any Thread, call aquireOwnershipFor(null, true);
 	 */
-	public boolean relinquishOwnershipFor(Thread t);
+	public boolean relinquishOwnershipFor(Thread t) throws IllegalArgumentException;
 }
