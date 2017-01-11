@@ -3,7 +3,7 @@ package org.team5940.robot_core.modules.implementations;
 import org.team5940.robot_core.modules.interfaces.OwnableModule;
 
 public abstract class SimpleOwnableModule implements OwnableModule {
-	Thread t;//What is this for? You shouldn't have to store another Thread...
+	
 	Thread currentOwner;
 	String nameOfModule = "SimpleOwnableModule";
 
@@ -14,13 +14,16 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 
 	@Override
 	public synchronized boolean isOwnedBy(Thread t) {
-		this.t = t;
-		if (this.t == t.currentThread()) {
+		
+		if (currentOwner == t) {
 
 			return true;
-		} else if (this.t == null) {// and no owner
+		} else if (currentOwner == null) {
 			return true;
-		} else {
+		} else if (t==null) {
+			return true;
+		}
+		else {
 			return false;
 		}
 
@@ -28,19 +31,20 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 
 	@Override
 	public boolean aquireOwnershipFor(Thread t, boolean force) {
-		this.t = t;
-		if (currentOwner == null){
-			this.t = currentOwner;
-		} else if (force == true){ //you should also check that it doesn't currently own it.
-			this.t = currentOwner;
+		
+		if (currentOwner == null && currentOwner != t){
+			currentOwner = t;
+		} else if (force == true && currentOwner != t){
+			currentOwner = t;
 		}
+		
 		
 		return this.isOwnedBy(t);
 	}
 
 	@Override
-	public boolean relinquishOwnershipFor(Thread t) {//No illegal argument Exception throw...
-		if (this.isOwnedBy(t)==true){
+	public boolean relinquishOwnershipFor(Thread t) {
+		if (this.isOwnedBy(t)==true && t != null){
 			currentOwner=null;
 		}
 		return this.isOwnedBy(t);
