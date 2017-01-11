@@ -20,9 +20,11 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	 */
 	public ModuleHashTable(T[] initModules) {
 		super();
-		for(int i = 0; i < initModules.length; i++) {
-			T module = initModules[i];
-			this.put(module.getName(), module);
+		if(initModules != null) {
+			for(int i = 0; i < initModules.length; i++) {
+				T module = initModules[i];
+				this.put(module.getName(), module);
+			}
 		}
 	}
 	
