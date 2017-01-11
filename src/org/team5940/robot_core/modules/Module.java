@@ -16,6 +16,6 @@ public interface Module {
 	 * This should return a NEW ModuleList containing all of the direct submodules of this, named by the return of their .getName()s.
 	 * @return A NEW ModuleList containing submodules.
 	 */
-	public ModuleHashTable<? extends Module> getSubModules();
+	public ModuleHashTable getSubModules();
 	
 }
