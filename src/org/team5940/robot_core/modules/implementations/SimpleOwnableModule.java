@@ -12,10 +12,14 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	 * Stores the currentOwner of the module (the owner being a thread)
 	 */
 	Thread currentOwner;
+	/**
+	 * Stores the name of the module
+	 */
 	String nameOfModule = "SimpleOwnableModule";
-/**
- * Gets the name of the module
- */
+	/**
+	 * This is the name for the instance of the Module implementing this interface. Multiple instances of implementations of Module should never have the same name. Module names conventionally are only made of alphanumeric characters and underscores to separate groups of those (e.g. left_shifter).
+	 * @return The name of the instance of this Module.
+	 */
 	@Override
 	public synchronized String getName() {
 		return nameOfModule;
@@ -55,7 +59,7 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	 * @return true if t owns this, false otherwise.
 	 */
 	@Override
-	public boolean aquireOwnershipFor(Thread t, boolean force) {
+	public synchronized boolean aquireOwnershipFor(Thread t, boolean force) {
 		
 		if (currentOwner == null && currentOwner != t){
 			currentOwner = t;
@@ -75,7 +79,7 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	 * @throws IllegalArgumentException If t == null. To force relinquishing for any Thread, call aquireOwnershipFor(null, true);
 	 */
 	@Override
-	public boolean relinquishOwnershipFor(Thread t) {
+	public synchronized boolean relinquishOwnershipFor(Thread t) {
 		if (this.isOwnedBy(t)==true && t != null){
 			currentOwner=null;
 		}
