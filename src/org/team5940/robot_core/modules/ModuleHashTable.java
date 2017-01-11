@@ -27,42 +27,55 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	}
 	
 	/**
-	 * Gets all of the Modules contained in this ModuleList where .getClass().isAssignableFrom(parent) returns true.
+	 * Gets all of the Modules contained in this ModuleList where parent.isAssignableFrom(sub.getClass()) returns true.
 	 * @param parent The class that you want Modules to be assignable from. 
 	 * @return A ModuleList containing direct submodules that are assignable from parent.
 	 */
-	public ModuleHashTable<T> getDirectSubModulesAssignableFrom(Class<? extends Module> parent) {
-		ModuleHashTable<T> out = new ModuleHashTable<T>();
+	@SuppressWarnings("unchecked")
+	public <M extends Module> ModuleHashTable<M> getDirectSubModulesAssignableTo(Class<? extends Module> parent) {
+		ModuleHashTable<M> out = new ModuleHashTable<M>();
 		
-		@SuppressWarnings("unchecked")
         T[] modules = (T[]) Array.newInstance(Module.class, 0);
 		modules = this.values().toArray(modules);
 		
 		for(int i = 0; i < modules.length; i++) {
 			T module = modules[i];
-			this.put(module.getName(), module);
+			if(parent.isAssignableFrom(module.getClass())) out.put(module.getName(), (M) module);
 		}
 		
 		return out;
 	}
 	
 	/**
-	 * Gets all of the Modules contained in this ModuleList, including submodules of Modules, where .getClass().isAssignableFrom(parent) returns true.
+	 * Gets all of the Modules contained in this ModuleList, including submodules of Modules, where where parent.isAssignableFrom(sub.getClass()) returns true.
 	 * @param parent The class that you want Modules to be assignable from. 
 	 * @return A ModuleList containing all submodules that are assignable from parent.
 	 */
-	public ModuleHashTable<T> getAllSubModulesAssignableFrom(Class<? extends Module> parent) {
-		ModuleHashTable<T> out = new ModuleHashTable<T>();
+	@SuppressWarnings("unchecked")
+	public <M extends Module> ModuleHashTable<M> getAllSubModulesAssignableTo(Class<M> parent) {
+		ModuleHashTable<M> out = new ModuleHashTable<M>();
 		
-		@SuppressWarnings("unchecked")
+		//Get modules in table
         T[] modules = (T[]) Array.newInstance(Module.class, 0);
 		modules = this.values().toArray(modules);
 		
+		//Iterate through modules
 		for(int i = 0; i < modules.length; i++) {
 			T module = modules[i];
-			this.put(module.getName(), module);
-			//TODO add submodules
 			
+			//Add module to out if assignable
+			if(parent.isAssignableFrom(module.getClass())) out.put(module.getName(), (M) module);
+			
+			//Get module's submodules that are assignable
+			ModuleHashTable<M> subModulesAssignable = module.getSubModules().getAllSubModulesAssignableTo(parent);
+	        M[] subModules = (M[]) Array.newInstance(Module.class, 0);
+			subModules = subModulesAssignable.values().toArray(subModules);
+			
+			//Iterate through submodules
+			for(int j = 0; j < subModules.length; j++) {
+				M subModule = subModules[j];
+				out.put(subModule.getName(), subModule);
+			}
 		}
 		
 		return out;
