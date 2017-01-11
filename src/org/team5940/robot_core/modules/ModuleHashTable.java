@@ -34,7 +34,7 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	 * @return A ModuleList containing direct submodules that are assignable from parent.
 	 */
 	@SuppressWarnings("unchecked")
-	public <M extends Module> ModuleHashTable<M> getDirectSubModulesAssignableTo(Class<? extends Module> parent) {
+	public <M extends Module> ModuleHashTable<M> getDirectSubModulesAssignableTo(Class<M> parent) {
 		ModuleHashTable<M> out = new ModuleHashTable<M>();
 		
         T[] modules = (T[]) Array.newInstance(Module.class, 0);
