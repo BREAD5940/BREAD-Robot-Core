@@ -20,7 +20,10 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	 * Stores the name of the module
 	 */
 	String nameOfModule;
-
+	/**
+	 * A constructor that creates a SimpleOwnableModule.
+	 * @param nameOfModule
+	 */
 	public SimpleOwnableModule(String nameOfModule) {
 		this.nameOfModule = nameOfModule;
 	}
