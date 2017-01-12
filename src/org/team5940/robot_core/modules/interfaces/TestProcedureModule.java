@@ -5,28 +5,28 @@ import org.team5940.robot_core.modules.Module;
 public interface TestProcedureModule extends Module {
 	
 	/**
-	 * States that the test can be in
+	 * States that the test can be in.
 	 */
 	public enum TestingState {
 		 
 		/**
-		 * The test is running
+		 * The test is running.
 		 */
 		RUNNING,
 		
 		/**
-		 * The test is successful
+		 * The test is successful.
 		 */
 		
 		SUCCESSFUL,
 		
 		/**
-		 * The test failed
+		 * The test failed.
 		 */
 		FAILED,
 		
 		/**
-		 * There is in error in the test
+		 * There is in error in the test.
 		 */
 		ERROR
 	}
