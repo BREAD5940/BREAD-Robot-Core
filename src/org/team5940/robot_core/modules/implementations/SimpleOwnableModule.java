@@ -15,11 +15,11 @@ public abstract class SimpleOwnableModule implements OwnableModule {
 	/**
 	 * Stores the currentOwner of the module (the owner being a thread)
 	 */
-	Thread currentOwner;
+	private Thread currentOwner;
 	/**
 	 * Stores the name of the module
 	 */
-	String nameOfModule;
+	private String nameOfModule;
 	/**
 	 * A constructor that creates a SimpleOwnableModule.
 	 * @param nameOfModule
