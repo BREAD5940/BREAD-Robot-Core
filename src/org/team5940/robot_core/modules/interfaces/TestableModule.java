@@ -2,18 +2,17 @@ package org.team5940.robot_core.modules.interfaces;
 
 import org.team5940.robot_core.modules.Module;
 
+/**
+ * This extension of Module provides the interface to test modules and know the test's state. 
+ * @author Ryan
+ */
 public interface TestableModule extends Module {
 	
 	/**
 	 * States that the test can be in.
 	 */
-	public enum TestingState {
+	public enum TestResult {
 		 
-		/**
-		 * The test is running.
-		 */
-		RUNNING,
-		
 		/**
 		 * The test is successful.
 		 */
@@ -32,9 +31,10 @@ public interface TestableModule extends Module {
 	}
 	
 	/**
-	 * Runs the test and returns true if the test runs.
-	 * @return A true or false statement on if the test runs or not.
+	 * Runs the test and returns the result when complete.
+	 * @return A TestResult representing the result of the test.
 	 */
-	public boolean runTest();
+	public TestResult runTest();
+	
 	
 }
