@@ -18,4 +18,14 @@ public interface Module {
 	 */
 	public ModuleHashTable<? extends Module> getSubModules();
 	
+	/**
+	 * Initializes the module if it is not already initialized.  Should generally be called after all modules have been created, but before procedures start executing.
+	 */
+	public void initialize ();
+	
+	/**
+	 * Shuts down the module if it is not already shut down.  Should generally be called after procedures have finished executing.
+	 */
+	public void shutDown ();
+	
 }
