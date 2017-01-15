@@ -99,7 +99,7 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	}
 	
 	/**
-	 * Gets all top-level modules stored in this hash table.
+	 * Gets all top-level modules stored in this hash table. No order is guaranteed.
 	 * @return An array with the same type as this with the modules contained in this.
 	 */
 	public synchronized T[] getDirectSubModulesAsArray() {
@@ -110,7 +110,7 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	}
 	
 	/**
-	 * Gets ALL modules stored in this hash table.
+	 * Gets ALL modules stored in this hash table. No order is guaranteed.
 	 * @return An array with the same type as this with the modules and all submodules contained in this.
 	 */
 	public synchronized T[] getAllSubModulesAsArray() {
