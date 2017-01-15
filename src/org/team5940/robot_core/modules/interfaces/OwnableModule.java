@@ -3,7 +3,7 @@ package org.team5940.robot_core.modules.interfaces;
 import org.team5940.robot_core.modules.Module;
 
 /**
- * This extension of Module provides the interface to lock access to a Module to a particular Thread. This is useful in preventing unintentional concurrent usage, particularly of actuators.
+ * This extension of Module provides the interface to lock access to a Module to a particular Thread. This is useful in preventing unintentional concurrent usage, particularly of actuators. Any submodules of an OwnableModule that implement OwnableModule should also be acquired at the same time as they might be necessary for the proper functioning of a Module.
  * @author David Boles
  *
  */

@@ -13,7 +13,7 @@ public interface Module {
 	public String getName();
 	
 	/**
-	 * This should return a NEW ModuleList containing all of the direct submodules of this, named by the return of their .getName()s.
+	 * This should return a NEW ModuleList containing all of the direct submodules of this, named by the return of their .getName()s. This is intended for any modules that make up the lower level functionality of this module.
 	 * @return A NEW ModuleList containing submodules, shouldn't be null even if there aren't any.
 	 */
 	public ModuleHashTable<? extends Module> getSubModules();
