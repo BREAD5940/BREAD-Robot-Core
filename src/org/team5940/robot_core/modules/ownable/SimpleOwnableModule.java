@@ -1,6 +1,4 @@
-package org.team5940.robot_core.modules.implementations;
-
-import org.team5940.robot_core.modules.interfaces.OwnableModule;
+package org.team5940.robot_core.modules.ownable;
 
 /**
  * This extension of Module provides the interface to lock access to a Module to

@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules.interfaces;
+package org.team5940.robot_core.modules.ownable;
 
 import org.team5940.robot_core.modules.Module;
 
