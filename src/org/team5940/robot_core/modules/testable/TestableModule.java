@@ -34,7 +34,7 @@ public interface TestableModule extends Module {
 	 * Runs the test and returns the result when complete.
 	 * @return A TestResult representing the result of the test.
 	 */
-	public TestResult runTest();
+	public TestResult runTest(TestRunnerModule testRunner);
 	
 	
 }
