@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules.functionality;
+package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.ownable.OwnableModule;
 
