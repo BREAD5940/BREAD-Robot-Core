@@ -2,6 +2,11 @@ package org.team5940.robot_core.modules.procedure;
 
 import org.team5940.robot_core.modules.Module;
 
+/**
+ * A ProcedureModule contains control methods for an executable Thread. By definition of a ProcedureModule, each instance corresponds to one Thread and the ProcedureModule can be in one of the five {@link ProcedureState}s.
+ * @author David Boles
+ *
+ */
 public interface ProcedureModule extends Module {
 	
 	/**
@@ -25,14 +30,14 @@ public interface ProcedureModule extends Module {
 		FINISHED, 
 		
 		/**
-		 * Procedure was interrupted prematurely.
+		 * Procedure was interrupted prematurely and is not running.
 		 */
 		INTERRUPTED, 
 		
 		/**
 		 * Procedure had an error and is not running.
 		 */
-		ERROR
+		ERRORED
 		
 	}
 	
@@ -44,7 +49,7 @@ public interface ProcedureModule extends Module {
 	/**
 	 * Interrupts the procedure prematurely if it is currently running. If procedure is newly stopping, shouldn't return until the Procedure has entered the INTERRUPTED state.
 	 */
-	public boolean interrupt();
+	public void interrupt();
 
 	/**
 	 * Returns the current state of this Procedure.
