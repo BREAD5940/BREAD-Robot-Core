@@ -1,5 +1,8 @@
 package org.team5940.robot_core.modules;
 
+
+import org.team5940.robot_core.modules.logging.LoggerModule;
+
 /**
  * A module is the basic building block of robot code in BREAD's Robot Core. Anything that implements this interface should represent some part of the robot, whether a sensor, actuator, piece of code or even more complicated systems (e.g. the drivetrain). Actual functionality for a module should be given by interfaces that extend this interface.
  * @author David Boles
@@ -27,5 +30,12 @@ public interface Module {
 	 * Shuts down the module if it is not already shut down.  Should generally be called after procedures have finished executing.
 	 */
 	public void shutDown ();
+	
+	/**
+	 * Sets the Logger of this module.
+	 * @throws IllegalArgumentExecption if any of the inputs == null.
+	 * @param logger The logger that the module should now use.
+	 */
+	public void setLogger(LoggerModule logger) throws IllegalArgumentException;
 	
 }

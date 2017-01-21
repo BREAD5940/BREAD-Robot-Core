@@ -1,5 +1,7 @@
 package org.team5940.robot_core.modules;
 
+import org.team5940.robot_core.modules.logging.LoggerModule;
+
 public abstract class SimpleModule implements Module {
 	/**
 	 * Stores the name of this Module.
@@ -10,6 +12,8 @@ public abstract class SimpleModule implements Module {
 	 * Stores the submodules of this Module.
 	 */
 	private final ModuleHashTable<Module> subModules;
+	
+	private LoggerModule logger;
 	
 	/**
 	 * Creates a new SimpleModule with given arguments.
@@ -34,6 +38,13 @@ public abstract class SimpleModule implements Module {
 		ModuleHashTable<Module> out = new ModuleHashTable<Module>();
 		out.putAll(this.subModules);
 		return out;
+	}
+	
+	@Override
+	public void setLogger(LoggerModule logger) throws IllegalArgumentException {
+		if (logger == null) throw new IllegalArgumentException("Logger is null!");
+		this.logger = logger;
+		
 	}
 
 }
