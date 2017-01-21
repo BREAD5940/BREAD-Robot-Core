@@ -1,10 +1,7 @@
 package org.team5940.robot_core.modules;
 
-import java.lang.reflect.Array;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
 /**
@@ -49,11 +46,7 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 		if(parent == null) throw new IllegalArgumentException("Parent type null...");
 		ModuleHashTable<M> out = new ModuleHashTable<M>();
 		
-        T[] modules = (T[]) Array.newInstance(Module.class, 0);
-		modules = this.values().toArray(modules);
-		
-		for(int i = 0; i < modules.length; i++) {
-			T module = modules[i];
+		for(T module : this.values()) {
 			if(parent.isAssignableFrom(module.getClass())) out.put(module.getName(), (M) module);
 		}
 		
@@ -71,25 +64,17 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 		if(parent == null) throw new IllegalArgumentException("Parent type null...");
 		ModuleHashTable<M> out = new ModuleHashTable<M>();
 		
-		//Get modules in table
-        T[] modules = (T[]) Array.newInstance(Module.class, 0);
-		modules = this.values().toArray(modules);
-		
 		//Iterate through modules
-		for(int i = 0; i < modules.length; i++) {
-			T module = modules[i];
+		for(T module : this.values()) {
 			
 			//Add module to out if assignable
 			if(parent.isAssignableFrom(module.getClass())) out.put(module.getName(), (M) module);
 			
 			//Get module's submodules that are assignable
 			ModuleHashTable<M> subModulesAssignable = module.getSubModules().getAllSubModulesAssignableTo(parent);
-	        M[] subModules = (M[]) Array.newInstance(Module.class, 0);
-			subModules = subModulesAssignable.values().toArray(subModules);
 			
 			//Iterate through submodules
-			for(int j = 0; j < subModules.length; j++) {
-				M subModule = subModules[j];
+			for(M subModule : subModulesAssignable.values()) {
 				out.put(subModule.getName(), subModule);
 			}
 		}
@@ -99,25 +84,12 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	}
 	
 	/**
-	 * Gets all top-level modules stored in this hash table. No order is guaranteed.
-	 * @return An array with the same type as this with the modules contained in this.
-	 */
-	public synchronized T[] getDirectSubModulesAsArray() {
-		@SuppressWarnings("unchecked")
-		T[] modules = (T[]) Array.newInstance(Module.class, 0);
-		modules = this.getDirectSubModulesAssignableTo(Module.class).values().toArray(modules);
-		return modules;
-	}
-	
-	/**
 	 * Gets ALL modules stored in this hash table. No order is guaranteed.
-	 * @return An array with the same type as this with the modules and all submodules contained in this.
+	 * @return A {@link ModuleHashTable} with the same type as this with the modules and all submodules contained in this.
 	 */
-	public synchronized T[] getAllSubModulesAsArray() {
-		@SuppressWarnings("unchecked")
-		T[] modules = (T[]) Array.newInstance(Module.class, 0);
-		modules = this.getAllSubModulesAssignableTo(Module.class).values().toArray(modules);
-		return modules;
+	@SuppressWarnings("unchecked")
+	public synchronized ModuleHashTable<T> getAllSubModules() {
+		return (ModuleHashTable<T>) this.getAllSubModulesAssignableTo(Module.class);
 	}
 	
 	//put() OVERRIDE AND REPLACEMENT
@@ -173,10 +145,10 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	 */
 	@Override
 	public synchronized void putAll(Map<? extends String, ? extends T> t) throws IllegalArgumentException {
-		AtomicBoolean keysGood = new AtomicBoolean(false);//Should work?
-		t.forEach(new KeyCheckBiConsumer(keysGood));
-		if(keysGood.get()) super.putAll(t);
-		else throw new IllegalArgumentException("A key did not correspond to it's value's name!");
+		for(Map.Entry<? extends String, ? extends T> entry : t.entrySet()) {
+			if(!entry.getValue().getName().equals(entry.getKey())) throw new IllegalArgumentException("A key did not correspond to it's value's name!");
+		}
+		super.putAll(t);
 	}
 	
 	//putIfAbsent() OVERRIDE AND REPLACEMENT
@@ -246,20 +218,5 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 			return super.replace(newValue.getName(), oldValue, newValue);
 		else throw new IllegalArgumentException("Names are not the same!");
 	}
-}
-
-class KeyCheckBiConsumer implements BiConsumer<String, Module> {
-
-	AtomicBoolean previousChecksGood;
-	
-	public KeyCheckBiConsumer(AtomicBoolean previousChecksGood) {
-		this.previousChecksGood = previousChecksGood;
-	}
-	
-	@Override
-	public void accept(String t, Module u) {
-		if(previousChecksGood.get() && !t.equals(u.getName())) this.previousChecksGood.set(false);
-	}
-	
 }
 

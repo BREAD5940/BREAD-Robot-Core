@@ -28,17 +28,13 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 
 	@Override
 	public synchronized boolean isOwnedBy(Thread t) {
-
-		if (currentOwner == t && t.isAlive()) {
-
-			return true;
-		} else if (currentOwner == null && (t == null || t.isAlive())) {
-			return true;
-		} 
-		 else {
-			return false;
-		}
-
+		if(t == null) {
+			if(this.currentOwner == null || !this.currentOwner.isAlive()) return true;
+			else return false;
+		}else if (t.isAlive()) {
+			if(this.currentOwner == t) return true;
+			else return false;
+		}else return false;
 	}
 
 	@Override
@@ -53,7 +49,7 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 	@Override
 	public synchronized void relinquishOwnershipFor(Thread t) throws IllegalArgumentException {
 		if (t==null){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Cannot relinquish ownership for a null owner.");
 		}
 		if (this.isOwnedBy(t)) {
 			currentOwner = null;
