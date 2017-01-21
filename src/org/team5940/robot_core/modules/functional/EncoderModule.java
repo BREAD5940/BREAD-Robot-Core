@@ -1,6 +1,11 @@
 package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.Module;
+/**
+ * Interface for encoders to get rotation, velocity, and acceleration.
+ * @author Ryan Cen
+ *
+ */
 
 public interface EncoderModule extends Module {
 	

@@ -1,7 +1,11 @@
 package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.Module;
-
+/**
+ * Interface for controlling a piston.
+ * @author Ryan Cen
+ *
+ */
 public interface PistonModule extends Module {
 	
 	/**

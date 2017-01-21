@@ -4,8 +4,11 @@ import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashTable;
 
 import edu.wpi.first.wpilibj.SampleRobot;
-
-
+/**
+ * This is what gets run when the robot state changes.
+ * @author Michael Bentley
+ *
+ */
 public abstract class RobotModule extends SampleRobot implements Module {
 	
 	/**

@@ -1,7 +1,11 @@
 package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.ownable.OwnableModule;
-
+/**
+ * Interface for the gearbox and shifting them.
+ * @author Noah Sturgeon
+ *
+ */
 public interface ShifterModule extends OwnableModule {
 	/**
 	 * Sets the ShifterModule to the gear specified. Lower number means lower speed.

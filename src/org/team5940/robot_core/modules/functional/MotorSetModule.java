@@ -1,6 +1,11 @@
 package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.ownable.OwnableModule;
+/**
+ * Interface to set and get speed for a set of motors.
+ * @author Noah Sturgeon
+ *
+ */
 
 public interface MotorSetModule extends OwnableModule {
 	/**
