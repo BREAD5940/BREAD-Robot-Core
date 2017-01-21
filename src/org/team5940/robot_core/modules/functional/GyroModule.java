@@ -1,7 +1,10 @@
 package org.team5940.robot_core.modules.functional;
 
 import org.team5940.robot_core.modules.Module;
-
+/**
+ * Interface for the Gryo with 1 axis.
+ * @author Alexander Loeffler
+ */
 public interface GyroModule extends Module {
 		/**
 		 * Returns the current angle of the Gyro from initial position.
