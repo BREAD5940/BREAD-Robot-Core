@@ -93,9 +93,9 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	protected synchronized boolean ownsAllRequired() {
 		boolean out = true;
 		
-		OwnableModule[] required = this.requiredModules.getDirectSubModulesAsArray();
-		for(int i = 0; i < required.length; i++) {
-			if(!required[i].isOwnedBy(this.currentThread)) out = false;
+		
+		for(OwnableModule module : requiredModules.values()) {
+			if(!module.isOwnedBy(this.currentThread)) out = false;
 		}
 		
 		return out;
@@ -109,11 +109,10 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	protected synchronized boolean noneOwnsAllRequired() {
 		boolean out = true;
 		
-		OwnableModule[] required = this.requiredModules.getDirectSubModulesAsArray();
-		for(int i = 0; i < required.length; i++) {
-			if(!required[i].isNotOwned()) out = false;
+		for(OwnableModule module : requiredModules.values()) {
+			if(!module.isNotOwned()) return false;
 		}
-		
+
 		return out;
 	}
 	
@@ -124,9 +123,9 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 * @see OwnableModule#acquireOwnershipFor(Thread, boolean)
 	 */
 	public synchronized boolean acquireAllRequired(boolean force) {
-		OwnableModule[] required = this.requiredModules.getDirectSubModulesAsArray();
-		for(int i = 0; i < required.length; i++) {
-			required[i].acquireOwnershipFor(this.currentThread, force);
+		
+		for(OwnableModule module : requiredModules.values()) {
+			module.acquireOwnershipFor(this.currentThread, force);
 		}
 		
 		return this.ownsAllRequired();
@@ -137,9 +136,9 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 */
 	public synchronized void relinquishAllRequired() {
 		if(this.currentThread != null) {
-			OwnableModule[] required = this.requiredModules.getDirectSubModulesAsArray();
-			for(int i = 0; i < required.length; i++) {
-				required[i].relinquishOwnershipFor(this.currentThread);
+			
+			for(OwnableModule module : requiredModules.values()) {
+				module.relinquishOwnershipFor(this.currentThread);
 			}
 		}
 	}
