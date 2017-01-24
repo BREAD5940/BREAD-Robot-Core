@@ -13,7 +13,10 @@ public abstract class SimpleModule implements Module {
 	 */
 	private final ModuleHashTable<Module> subModules;
 	
-	private LoggerModule logger;
+	/**
+	 * Stores the logger for this module.
+	 */
+	protected LoggerModule logger;
 	
 	/**
 	 * Creates a new SimpleModule with given arguments.
