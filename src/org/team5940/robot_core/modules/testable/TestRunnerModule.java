@@ -16,8 +16,20 @@ public interface TestRunnerModule extends ProcedureModule {
 	public String getReturnedText();
 	
 	/**
-	 * Tells you if there is new text returned.
+	 * Tells you if there is new text returned since last prompt.
 	 * @return True if new text is returned, false if there is none.
 	 */
 	public boolean getNewReturn();
+	
+	/**
+	 * Delays until getNewReturn() returns true.
+	 * @return true if new return, false if timed out.
+	 */
+	public default void delayUntilNewReturn() {
+		while(!getNewReturn()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) { }
+		}
+	}
 }

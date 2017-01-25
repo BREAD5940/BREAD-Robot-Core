@@ -3,6 +3,7 @@ package org.team5940.robot_core.modules.procedure;
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.SimpleModule;
+import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.OwnableModule;
 import org.team5940.robot_core.modules.procedure.ProcedureModule.ProcedureState;
 
@@ -26,7 +27,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	/**
 	 * Stores the current Thread of this ProcedureModule.
 	 */
-	private SimpleProcedureThread currentThread = new SimpleProcedureThread(this);
+	private SimpleProcedureThread currentThread = new SimpleProcedureThread(this, this.logger);
 	
 	/**
 	 * Stores the current state of this ProcedureModule.
@@ -42,9 +43,10 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 * @param millisDelay The standard delay in between internal calls. Use 50 as a default...
 	 * @throws IllegalArgumentException if any argument is null.
 	 */
-	public SimpleProcedureModule(String name, ModuleHashTable<Module> subModules, ModuleHashTable<OwnableModule> requiredModules, boolean forceOwnership,  long millisDelay) throws IllegalArgumentException {
-		super(name, subModules);
+	public SimpleProcedureModule(String name, ModuleHashTable<Module> subModules, LoggerModule logger, ModuleHashTable<OwnableModule> requiredModules, boolean forceOwnership,  long millisDelay) throws IllegalArgumentException {
+		super(name, subModules, logger);
 		if(requiredModules == null) throw new IllegalArgumentException("Argument null!");
+		this.logger.log(this, "Creating SimpleProcedureModule", new Object[]{subModules, requiredModules, forceOwnership, millisDelay});
 		this.requiredModules = requiredModules;
 		this.forceOwnership = forceOwnership;
 		this.millisDelay = millisDelay;
@@ -58,13 +60,15 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 */
 	@Override
 	public synchronized void shutDown() {
+		this.logger.log(this, "Shutting Down");
 		this.interrupt();
 	}
 
 	@Override
 	public synchronized void start() {
 		if(this.getState() != ProcedureState.RUNNING) {
-			this.currentThread = new SimpleProcedureThread(this);
+			this.logger.log(this, "Starting");
+			this.currentThread = new SimpleProcedureThread(this, this.logger);
 			currentThread.start();
 			while(this.getState() != ProcedureState.RUNNING);
 		}
@@ -73,10 +77,17 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	@Override
 	public synchronized void interrupt() {
 		if(this.getState() == ProcedureState.RUNNING) {
+			this.logger.log(this, "Interrupting");
 			this.currentThread.interruptReason = ProcedureState.INTERRUPTED;
 			this.currentThread.interrupt();
 			while(this.getState() != ProcedureState.INTERRUPTED);
 		}
+	}
+	
+	@Override
+	public void setLogger(LoggerModule logger) throws IllegalArgumentException {
+		super.setLogger(logger);
+		this.currentThread.setLogger(logger);
 	}
 
 	@Override
@@ -123,6 +134,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 * @see OwnableModule#acquireOwnershipFor(Thread, boolean)
 	 */
 	public synchronized boolean acquireAllRequired(boolean force) {
+		this.logger.log(this, "Aquiring Ownership For All", force);
 		
 		for(OwnableModule module : requiredModules.values()) {
 			module.acquireOwnershipFor(this.currentThread, force);
@@ -135,7 +147,9 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 * Attempts to relinquish ownership for all of this' required OwnableModules if this ProcedureModule has a Thread.
 	 */
 	public synchronized void relinquishAllRequired() {
+		
 		if(this.currentThread != null) {
+			this.logger.log(this, "Relinquishing All Required");
 			
 			for(OwnableModule module : requiredModules.values()) {
 				module.relinquishOwnershipFor(this.currentThread);
@@ -181,12 +195,15 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 
 class SimpleProcedureThread extends Thread {
 	
-	protected final SimpleProcedureModule procedure;
+	private final SimpleProcedureModule procedure;
 	
 	ProcedureState interruptReason = ProcedureState.RUNNING;
 	
-	public SimpleProcedureThread(SimpleProcedureModule procedure) {
+	LoggerModule logger;
+	
+	public SimpleProcedureThread(SimpleProcedureModule procedure, LoggerModule logger) {
 		this.procedure = procedure;
+		this.logger = logger;//TODO add logging, add override to set both
 	}
 	
 	/**
@@ -196,6 +213,7 @@ class SimpleProcedureThread extends Thread {
 	public void run() {
 		this.procedure.state = ProcedureState.RUNNING;
 		this.procedure.acquireAllRequired(this.procedure.forceOwnership);
+		this.logger.log(this.procedure, "Starting Procedure");
 		this.procedure.procedureStart();
 		
 		this.doDelay();
@@ -204,25 +222,31 @@ class SimpleProcedureThread extends Thread {
 			if(!this.procedure.procedureUpdatesComplete()) {
 				if(this.procedure.ownsAllRequired() || this.procedure.noneOwnsAllRequired()) {
 					try {
+						this.logger.log(this.procedure, "Updating Procedure");
 						this.procedure.procedureUpdate();
 					} catch (Exception e) {
+						this.logger.error(this.procedure, "Updating Threw Exception", e);
 						this.interruptReason = ProcedureState.ERRORED;
 						this.interrupt();
 					}
 				}else {
+					this.logger.error(this.procedure, "Ownership Lost");
 					this.procedure.procedureOwnershipLost();
 					if(!(this.procedure.ownsAllRequired() || this.procedure.noneOwnsAllRequired())) {
+						this.logger.error(this.procedure, "Ownership Not Regained");
 						this.interruptReason = ProcedureState.ERRORED;
 						this.interrupt();
 					}
 				}
 			}else {
+				this.logger.log(this.procedure, "Updating Finished");
 				this.interruptReason = ProcedureState.FINISHED;
 				this.interrupt();
 			}
 			this.doDelay();
 		}
 		
+		this.logger.log(this.procedure, "Cleaning Procedure");
 		this.procedure.procedureClean();
 		this.procedure.relinquishAllRequired();
 		this.procedure.state = this.interruptReason;
@@ -235,5 +259,9 @@ class SimpleProcedureThread extends Thread {
 		try {
 			Thread.sleep(this.procedure.millisDelay);
 		} catch (InterruptedException e) { }
+	}
+	
+	public void setLogger(LoggerModule logger) {
+		this.logger = logger;
 	}
 }

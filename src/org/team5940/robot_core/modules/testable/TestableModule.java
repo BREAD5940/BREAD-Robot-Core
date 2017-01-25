@@ -33,8 +33,9 @@ public interface TestableModule extends Module {
 	/**
 	 * Runs the test and returns the result when complete.
 	 * @return A TestResult representing the result of the test.
+	 * @throws IllegalArgumentException If testRunner is null.
 	 */
-	public TestResult runTest(TestRunnerModule testRunner);
+	public TestResult runTest(TestRunnerModule testRunner) throws IllegalArgumentException;
 	
 	
 }

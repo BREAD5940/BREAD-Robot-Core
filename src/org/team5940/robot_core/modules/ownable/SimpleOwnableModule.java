@@ -3,6 +3,7 @@ package org.team5940.robot_core.modules.ownable;
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.SimpleModule;
+import org.team5940.robot_core.modules.logging.LoggerModule;
 
 /**
  * This extension of Module provides the interface to lock access to a Module to
@@ -22,8 +23,9 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 	 * A constructor that creates a SimpleOwnableModule.
 	 * @param nameOfModule
 	 */
-	public SimpleOwnableModule(String nameOfModule, ModuleHashTable<Module> subModules) {
-		super(nameOfModule, subModules);
+	public SimpleOwnableModule(String nameOfModule, ModuleHashTable<Module> subModules, LoggerModule logger) {
+		super(nameOfModule, subModules, logger);
+		this.logger.log(this, "Creating SimpleOwnableModule");
 	}
 
 	@Override
@@ -40,6 +42,7 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 	@Override
 	public synchronized boolean acquireOwnershipFor(Thread t, boolean force) {
 		if((this.isNotOwned() || force) && !this.isOwnedBy(t)) {
+			this.logger.log(this, "Aquiring Ownership", t);
 			this.currentOwner = t;
 		}
 
@@ -52,6 +55,7 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 			throw new IllegalArgumentException("Cannot relinquish ownership for a null owner.");
 		}
 		if (this.isOwnedBy(t)) {
+			this.logger.log(this, "Relinquishing Ownership", t);
 			currentOwner = null;
 		}
 	}

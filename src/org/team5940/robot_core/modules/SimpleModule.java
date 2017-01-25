@@ -22,12 +22,15 @@ public abstract class SimpleModule implements Module {
 	 * Creates a new SimpleModule with given arguments.
 	 * @param name The name of this Module.
 	 * @param subModules The submodules of this Module.
+	 * @param logger LoggerModule to initialize this with.
 	 * @throws IllegalArgumentException if any argument is null.
 	 */
-	public SimpleModule(String name, ModuleHashTable<Module> subModules) throws IllegalArgumentException {
-		if(name == null || subModules == null) throw new IllegalArgumentException("Argument null!");
+	public SimpleModule(String name, ModuleHashTable<Module> subModules, LoggerModule logger) throws IllegalArgumentException {
+		if(name == null || subModules == null || logger == null) throw new IllegalArgumentException("Argument null!");
+		logger.log(this, "Creating SimpleModule");
 		this.name = name;
 		this.subModules = subModules;
+		this.logger = logger;
 	}
 	
 	@Override
