@@ -9,6 +9,10 @@ import org.team5940.robot_core.modules.ownable.SimpleOwnableModule;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
+/**
+* Implementation of ShifterModule to shift gears on the robot.
+* @Author Alexander Loeffler
+*/
 public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements ShifterModule{
 	
 	private DoubleSolenoid shifty_shifter;
@@ -21,24 +25,6 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 		this.shifty_shifter= new DoubleSolenoid(highGear,lowGear);
 		this.Fowardishigh=fishigh;
 		gear0();
-	}
-
-	@Override
-	public boolean isOwnedBy(Thread t) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean acquireOwnershipFor(Thread t, boolean force) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void relinquishOwnershipFor(Thread t) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -89,7 +75,7 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 		else{
 			this.shifty_shifter.set(kFoward);
 		}
-		currentshift=0;
+		currentshift=1;
 	}
 
 }
