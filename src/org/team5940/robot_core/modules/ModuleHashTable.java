@@ -86,9 +86,8 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	 * Gets ALL modules stored in this hash table. No order is guaranteed.
 	 * @return A {@link ModuleHashTable} with the same type as this with the modules and all submodules contained in this.
 	 */
-	@SuppressWarnings("unchecked")
-	public synchronized ModuleHashTable<T> getAllSubModules() {
-		return (ModuleHashTable<T>) this.getAllSubModulesAssignableTo(Module.class);
+	public synchronized ModuleHashTable<Module> getAllSubModules() {
+		return this.getAllSubModulesAssignableTo(Module.class);
 	}
 	
 	//put() OVERRIDE AND REPLACEMENT
