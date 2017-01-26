@@ -11,14 +11,22 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
 * Implementation of ShifterModule to shift gears on the robot.
-* @Author Alexander Loeffler
+* @author Alexander Loeffler
 */
+
 public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements ShifterModule{
 	
 	private DoubleSolenoid shifty_shifter;
 	private boolean Fowardishigh;
 	private short currentshift=0;
-	
+	/**
+ * Creates a new DoubleSolenoidShifterModule Object.
+ * @param name The name of the shifter you are creating.
+ * @param logger The log to save to.
+ * @param highGear The integer value of high gear.
+ * @param lowGear The integer value of low gear.
+ * @param fishigh Boolean value for if Foward is High gear.
+ */
 	public DoubleSolenoidShifterModule(String name, LoggerModule logger,int highGear, int lowGear, boolean fishigh)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashTable<>(), logger);
@@ -57,6 +65,7 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	public int getNumberOfGears() {
 		return 2;
 	}
+	
 	private void gear0(){
 		if(Fowardishigh){
 			this.shifty_shifter.set(kFoward);
