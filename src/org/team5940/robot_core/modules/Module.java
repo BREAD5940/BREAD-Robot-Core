@@ -22,7 +22,7 @@ public interface Module {
 	public ModuleHashTable<? extends Module> getSubModules();
 	
 	/**
-	 * Initializes the module if it is not already initialized.  Should generally be called after all modules have been created, but before procedures start executing.
+	 * Initializes the module if it is not already initialized.  Should generally be called after all modules have been created, but before procedures start executing. IS NOT GUARANTEED TO BE CALLED AFTER SUBMODULE INIT.
 	 */
 	public void initialize ();
 	
