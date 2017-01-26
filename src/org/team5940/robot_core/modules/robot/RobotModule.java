@@ -42,10 +42,46 @@ public abstract class RobotModule extends SampleRobot implements Module {
 		subModules.put(subModule);
 	}
 	
+	
 	@Override
 	public void setLogger(LoggerModule logger) throws IllegalArgumentException {
 		if (logger == null) throw new IllegalArgumentException("Logger is null!");
 		this.logger = logger;
 		
 	}
+	
+	/**
+	 * Runs initialize() for RobotModule and all of its subModules when the robot is started.  
+	 * Also initializes the subModules. 
+	 * 
+	 * Super Docs:
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void robotInit() {
+		createSubmodules();
+		this.initialize();
+		for (Module subModule : subModules.getAllSubModules().values()) {
+			subModule.initialize();
+		}
+	}
+	
+	/**
+	 * Creates all of the submodules in the subModule ModuleHashTable
+	 */
+	protected abstract void createSubmodules();
+
+	/**
+	 * Runs shutDown() for RobotModule and all of its subModules when the robot is disabled.
+	 * 
+	 * Super Docs:
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void disabled() {
+		for (Module subModule : subModules.getAllSubModules().values()) {
+			subModule.shutDown();
+		}
+		this.shutDown();
+	};
 }
