@@ -33,7 +33,7 @@ public interface Module {
 	
 	/**
 	 * Sets the Logger of this module.
-	 * @throws IllegalArgumentExecption if any of the inputs == null.
+	 * @throws IllegalArgumentException if any of the inputs == null.
 	 * @param logger The logger that the module should now use.
 	 */
 	public void setLogger(LoggerModule logger) throws IllegalArgumentException;

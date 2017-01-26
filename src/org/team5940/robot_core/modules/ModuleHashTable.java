@@ -23,7 +23,6 @@ public class ModuleHashTable<T extends Module> extends Hashtable<String, T> {//T
 	
 	/**
 	 * Creates a new ModuleList with initModules and the keys them.getName().
-	 * @param initModules The modules in this ModuleList. This can be null or empty if you do not want any.
 	 */
 	public ModuleHashTable(T[] initModules) {
 		super();
