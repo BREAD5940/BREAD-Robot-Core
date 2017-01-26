@@ -13,8 +13,8 @@ public interface TankDrivetrainModule extends OwnableModule {
 	
 /**
  * Updates a tank drivetrain for tank control, invidually moving each set of wheels.
- * @param Left the speed you want for the left side. -1 to 1, inclusive for both.
- * @param Right the speed you want for the right side. -1 to 1, inclusive for both.
+ * @param left the speed you want for the left side. -1 to 1, inclusive for both.
+ * @param right the speed you want for the right side. -1 to 1, inclusive for both.
  */
  	public void updateTank(double left, double right);
 	

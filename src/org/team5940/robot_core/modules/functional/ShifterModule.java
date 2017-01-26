@@ -9,8 +9,8 @@ import org.team5940.robot_core.modules.ownable.OwnableModule;
 public interface ShifterModule extends OwnableModule {
 	/**
 	 * Sets the ShifterModule to the gear specified. Lower number means lower speed.
-	 * @param The gear to set this to.
-	 * @throws IllegealArgumentException if gear >= getNumberOfGears() or gear < 0.
+	 * @param gear The gear to set this to.
+	 * @throws IllegealArgumentException if gear &gt;= getNumberOfGears() or gear &lt; 0.
 	 */
 	public void setShift (int gear) throws IllegalArgumentException;
 	

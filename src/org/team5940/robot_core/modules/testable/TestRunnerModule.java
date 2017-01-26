@@ -23,7 +23,6 @@ public interface TestRunnerModule extends ProcedureModule {
 	
 	/**
 	 * Delays until getNewReturn() returns true.
-	 * @return true if new return, false if timed out.
 	 */
 	public default void delayUntilNewReturn() {
 		while(!getNewReturn()) {
