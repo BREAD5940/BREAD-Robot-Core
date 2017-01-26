@@ -68,21 +68,21 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	
 	private void gear0(){
 		if(Fowardishigh){
-			this.shifty_shifter.set(kFoward);
+			this.shifty_shifter.set(DoubleSolenoid.Value.kForward);
 			
 		}
 		else{
-			this.shifty_shifter.set(kReverse);
+			this.shifty_shifter.set(DoubleSolenoid.Value.kReverse);
 		}
 		currentshift=0;
 	}
 	private void gear1(){
 		if(Fowardishigh){
-			this.shifty_shifter.set(kReverse);
+			this.shifty_shifter.set(DoubleSolenoid.Value.kReverse);
 			
 		}
 		else{
-			this.shifty_shifter.set(kFoward);
+			this.shifty_shifter.set(DoubleSolenoid.Value.kForward);
 		}
 		currentshift=1;
 	}
