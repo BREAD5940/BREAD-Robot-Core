@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules.functional;
+package org.team5940.robot_core.modules.functional.accelerometer;
 
 import org.team5940.robot_core.modules.Module;
 /**
