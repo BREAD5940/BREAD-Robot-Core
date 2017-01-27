@@ -1,1 +1,7 @@
 org.team5940.robot_core.modules
+org.team5940.robot_core.modules.functional
+org.team5940.robot_core.modules.logging
+org.team5940.robot_core.modules.ownable
+org.team5940.robot_core.modules.procedure
+org.team5940.robot_core.modules.robot
+org.team5940.robot_core.modules.testable
