@@ -26,6 +26,7 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	public DoubleSolenoidShifterModule(String name, LoggerModule logger, int canPort, int chan1, int chan2)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashTable<>(), logger);
+		this.logger.log(this, "Creating DoubleSolenoidShifterModule", new Object[]{canPort, chan1, chan2});
 		this.solenoid = new DoubleSolenoid(canPort, chan1, chan2);
 	}
 
@@ -37,34 +38,40 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	 */
 	@Override
 	public void initialize() {
+		this.logger.log(this, "Initializing");
 		setShift(0);
 	}
 
 	@Override
 	public void shutDown() {
-		
+		this.logger.log(this, "Shutting Down");
 	}
 	
 	@Override
 	public void setShift(int gear) throws IllegalArgumentException {
 		if(gear == 0) {
+			this.logger.vLog(this, "Setting Gear", gear);
 			this.solenoid.set(DoubleSolenoid.Value.kForward);
 			currentGear=0;
 		}else if (gear == 1) {
+			this.logger.vLog(this, "Setting Gear", gear);
 			this.solenoid.set(DoubleSolenoid.Value.kReverse);
 			currentGear=1;
 		}else {
+			this.logger.vError(this, "Gear Out Of Bounds", gear);
 			throw new IllegalArgumentException("Gear out of bounds!");
 		}
 	}
 
 	@Override
 	public int getShift() {
-		return currentGear;
+		this.logger.vLog(this, "Getting Gear", this.currentGear);
+		return this.currentGear;
 	}
 
 	@Override
 	public int getNumberOfGears() {
+		this.logger.vLog(this, "Getting Number Of Gears", 2);
 		return 2;
 	}
 

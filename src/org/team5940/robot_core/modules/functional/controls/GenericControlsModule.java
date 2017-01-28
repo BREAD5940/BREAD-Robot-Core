@@ -47,25 +47,30 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	
 	@Override
 	public synchronized void initialize() {
-		//Nothing to do here...
+		this.logger.log(this, "Initializing");
 	}
 
 	@Override
 	public synchronized void shutDown() {
-		//Nothing to do here...
+		this.logger.log(this, "Shutting Down");
 	}
 
 	@Override
 	public synchronized double getAxis(String axis) throws IllegalArgumentException {
 		if(this.axisAvailable(axis)) {
-			if(!this.axesIsInverted.get(axis)) return this.axisControlDevices.get(axis).getRawAxis(this.axisControlAxes.get(axis));
-			if(this.axesIsInverted.get(axis))return -1*(this.axisControlDevices.get(axis).getRawAxis(this.axisControlAxes.get(axis)));
-		}throw new IllegalArgumentException("Axis not found!");
+			double out = this.axisControlDevices.get(axis).getRawAxis(this.axisControlAxes.get(axis));
+			if(this.axesIsInverted.get(axis)) out = -1*(this.axisControlDevices.get(axis).getRawAxis(this.axisControlAxes.get(axis)));
+			this.logger.vLog(this, "Axis Accessed", axis + ": " + out);
+		}
+		this.logger.vError(this, "Unavailable Axis Accessed", axis);
+		throw new IllegalArgumentException("Axis not found!");
 	}
 
 	@Override
 	public synchronized boolean axisAvailable(String axis) {
-		return axisControlDevices.contains(axis);
+		boolean out = axisControlDevices.contains(axis);
+		this.logger.vLog(this, "Axis Available", axis + ": " + out);
+		return out;
 	}
 
 	/**
@@ -78,8 +83,11 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	 * @throws IllegalArgumentException If any inputs are null.
 	 */
 	public synchronized GenericControlsModule addAxis(String axisName, GenericHID device, int rawAxis, boolean isInverted) throws IllegalArgumentException {
-		if(axisName == null || device == null) throw new IllegalArgumentException("Argument null!");
-		this.logger.log(this, "Adding Axis", new Object[] {device, rawAxis});
+		if(axisName == null || device == null) {
+			this.logger.vError(this, "Adding Axis With Null", new Object[]{axisName, device, isInverted});
+			throw new IllegalArgumentException("Argument null!");
+		}
+		this.logger.vLog(this, "Adding Axis", new Object[]{axisName, device, isInverted});
 		this.axisControlDevices.put(axisName, device);
 		this.axisControlAxes.put(axisName, rawAxis);
 		this.axesIsInverted.put(axisName, isInverted);
@@ -89,14 +97,20 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	@Override
 	public synchronized boolean getButton(String button) throws IllegalArgumentException {
 		if(this.buttonAvailable(button)) {
-			if(!this.buttonIsInverted.get(button)) return this.buttonControlDevices.get(button).getRawButton(this.buttonControlButtons.get(button));
-			if(this.buttonIsInverted.get(button)) return !this.buttonControlDevices.get(button).getRawButton(this.buttonControlButtons.get(button));
-		}throw new IllegalArgumentException("Button not found!");
+			boolean out = this.buttonControlDevices.get(button).getRawButton(this.buttonControlButtons.get(button));;
+			if(this.buttonIsInverted.get(button)) out = !out;
+			this.logger.vLog(this, "Button Accessed", button + ": " + out);
+			return out;
+		}
+		this.logger.vError(this, "Unavailable Button Accessed", button);
+		throw new IllegalArgumentException("Button not found!");
 	}
 
 	@Override
 	public synchronized boolean buttonAvailable(String button) {
-		return buttonControlDevices.contains(button);
+		boolean out = buttonControlDevices.contains(button);
+		this.logger.vLog(this, "Button Available", button + ": " + out);
+		return out;
 	}
 	
 	/** 
@@ -104,32 +118,48 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	 * @param buttonName The name of the button you are adding. Identifier used in {@link GenericControlsModule#getButton(String)}
 	 * @param device The GenericHID device to read from.
 	 * @param rawButton The raw axis number to be read from device.
-	 * @param isInvert Boolean for is inverted buttons.
+	 * @param isInverted Boolean for is inverted buttons.
 	 * @return this. Allows chaining of adds directly after initialization. (e.g. new GenericControlsModule(...).addAxis(...).addAxis(...).addButton(...)...;)
 	 */
-	public synchronized GenericControlsModule addButton(String buttonName, GenericHID device, int rawButton, boolean isInvert) {
-		if(buttonName == null || device == null) throw new IllegalArgumentException("Argument null!");
-		this.logger.log(this, "Adding Button", new Object[] {device, rawButton});
+	public synchronized GenericControlsModule addButton(String buttonName, GenericHID device, int rawButton, boolean isInverted) {
+		if(buttonName == null || device == null) {
+			this.logger.vError(this, "Adding Button With Null", new Object[]{buttonName, device, isInverted});
+			throw new IllegalArgumentException("Argument null!");
+		}
+		this.logger.vLog(this, "Adding Button", new Object[] {device, rawButton, isInverted});
 		this.buttonControlDevices.put(buttonName, device);
-		this.buttonIsInverted.put(buttonName, isInvert);
+		this.buttonIsInverted.put(buttonName, isInverted);
 		this.buttonControlButtons.put(buttonName, rawButton);
 		return this;
 	}
 
 	@Override
 	public TestResult runTest(TestRunnerModule testRunner) throws IllegalArgumentException {
-		if(testRunner == null) throw new IllegalArgumentException("testRunner null");
+		if(testRunner == null) {
+			this.logger.vError(this, "Test Run With Null testRunner");
+			throw new IllegalArgumentException("testRunner null");
+		}
 		boolean testsGood = true;
 		
 		try {
 			for(String axis : this.axisControlAxes.keySet()) {
 				while(!testRunner.getNewReturn()) testRunner.promptText("Is " + axis + " doing what it should (y/n): " + this.getAxis(axis));
-				if(testRunner.getReturnedText().equals("n")) testsGood = false;
+				if(testRunner.getReturnedText().equals("n")) {
+					this.logger.vLog(this, "Axis Test Failed", axis);
+					testsGood = false;
+				}else {
+					this.logger.vLog(this, "Axis Test Passed", axis);
+				}
 			}
 			
 			for(String button : this.buttonControlButtons.keySet()) {
 				while(!testRunner.getNewReturn()) testRunner.promptText("Is " + button + " doing what it should (y/n): " + this.getButton(button));
-				if(testRunner.getReturnedText().equals("n")) testsGood = false;
+				if(testRunner.getReturnedText().equals("n")) {
+					this.logger.vLog(this, "Button Test Failed", button);
+					testsGood = false;
+				}else {
+					this.logger.vLog(this, "Button Test Passed", button);
+				}
 			}
 		}catch (Exception e) {
 			return TestResult.ERROR;

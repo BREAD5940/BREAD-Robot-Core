@@ -26,8 +26,11 @@ public abstract class SimpleModule implements Module {
 	 * @throws IllegalArgumentException if any argument is null.
 	 */
 	public SimpleModule(String name, ModuleHashTable<Module> subModules, LoggerModule logger) throws IllegalArgumentException {
-		if(name == null || subModules == null || logger == null) throw new IllegalArgumentException("Argument null!");
-		logger.log(this, "Creating SimpleModule");
+		if(name == null || subModules == null || logger == null) {
+			logger.vError(this, "SimpleModule Created With Null", new Object[]{name, subModules, logger});
+			throw new IllegalArgumentException("Argument null!");
+		}
+		logger.log(this, "Creating SimpleModule", new Object[]{name, subModules, logger});
 		this.name = name;
 		this.subModules = subModules;
 		this.logger = logger;
@@ -35,6 +38,7 @@ public abstract class SimpleModule implements Module {
 	
 	@Override
 	public String getName() {
+		this.logger.vLog(this, "Name Accessed", this.name);
 		return this.name;
 	}
 	
@@ -43,14 +47,18 @@ public abstract class SimpleModule implements Module {
 	public ModuleHashTable<? extends Module> getSubModules() {
 		ModuleHashTable<Module> out = new ModuleHashTable<Module>();
 		out.putAll(this.subModules);
+		this.logger.vLog(this, "SubModules Accessed", out);
 		return out;
 	}
 	
 	@Override
 	public void setLogger(LoggerModule logger) throws IllegalArgumentException {
-		if (logger == null) throw new IllegalArgumentException("Logger is null!");
+		if (logger == null) {
+			this.logger.vError(this, "Logger Set With Null", logger);
+			throw new IllegalArgumentException("Logger is null!");
+		}
+		logger.vLog(this, "Logger Switched To", new Object[]{this.logger, logger});
 		this.logger = logger;
-		
 	}
 
 }

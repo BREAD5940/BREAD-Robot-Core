@@ -45,8 +45,11 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 */
 	public SimpleProcedureModule(String name, ModuleHashTable<Module> subModules, LoggerModule logger, ModuleHashTable<OwnableModule> requiredModules, boolean forceOwnership,  long millisDelay) throws IllegalArgumentException {
 		super(name, subModules, logger);
-		if(requiredModules == null) throw new IllegalArgumentException("Argument null!");
-		this.logger.log(this, "Creating SimpleProcedureModule", new Object[]{subModules, requiredModules, forceOwnership, millisDelay});
+		if(requiredModules == null) {
+			logger.vError(this, "SimpleProcedureModule Created With Null", requiredModules);
+			throw new IllegalArgumentException("Argument null!");
+		}
+		logger.log(this, "Creating SimpleProcedureModule", new Object[]{subModules, requiredModules, forceOwnership, millisDelay});
 		this.requiredModules = requiredModules;
 		this.forceOwnership = forceOwnership;
 		this.millisDelay = millisDelay;
@@ -72,6 +75,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 			currentThread.start();
 			while(this.getState() != ProcedureState.RUNNING);
 		}
+		this.logger.vError(this, "Start When Running");
 	}
 
 	@Override
@@ -82,6 +86,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 			this.currentThread.interrupt();
 			while(this.getState() != ProcedureState.INTERRUPTED);
 		}
+		this.logger.vError(this, "Interrupt When Not Running");
 	}
 	
 	@Override
@@ -92,6 +97,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 
 	@Override
 	public synchronized ProcedureState getState() {
+		this.logger.vLog(this, "State Accessed", this.state);
 		return this.state;
 	}
 	
@@ -109,6 +115,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 			if(!module.isOwnedBy(this.currentThread)) out = false;
 		}
 		
+		this.logger.vLog(this, "Owns All Required", out);
 		return out;
 	}
 	
@@ -124,6 +131,7 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 			if(!module.isNotOwned()) return false;
 		}
 
+		this.logger.vLog(this, "None Owns All Required");
 		return out;
 	}
 	
@@ -134,19 +142,21 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 	 * @see OwnableModule#acquireOwnershipFor(Thread, boolean)
 	 */
 	public synchronized boolean acquireAllRequired(boolean force) {
-		this.logger.log(this, "Aquiring Ownership For All", force);
 		
 		for(OwnableModule module : requiredModules.values()) {
 			module.acquireOwnershipFor(this.currentThread, force);
 		}
 		
-		return this.ownsAllRequired();
+		boolean out = this.ownsAllRequired();
+		this.logger.vLog(this, "Aquired All Required", out);
+		return out;
 	}
 	
 	/**
 	 * Attempts to relinquish ownership for all of this' required OwnableModules if this ProcedureModule has a Thread.
 	 */
 	public synchronized void relinquishAllRequired() {
+		this.logger.vLog(this, "Relinquishing All Required");
 		
 		if(this.currentThread != null) {
 			this.logger.log(this, "Relinquishing All Required");

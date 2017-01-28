@@ -31,31 +31,48 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 	@Override
 	public synchronized boolean isOwnedBy(Thread t) {
 		if(t == null) {
-			if(this.currentOwner == null || !this.currentOwner.isAlive()) return true;
-			else return false;
+			if(this.currentOwner == null || !this.currentOwner.isAlive()) {
+				this.logger.vLog(this, "Owned By", t);
+				return true;
+			}
+			else {
+				this.logger.vLog(this, "Not Owned By", t);
+				return false;
+			}
 		}else if (t.isAlive()) {
-			if(this.currentOwner == t) return true;
-			else return false;
-		}else return false;
+			if(this.currentOwner == t) {
+				this.logger.vLog(this, "Owned By", t);
+				return true;
+			}
+			else {
+				this.logger.vLog(this, "Not Owned By", t);
+				return false;
+			}
+		}
+		this.logger.vLog(this, "Not Owned By", t);
+		return false;
 	}
 
 	@Override
 	public synchronized boolean acquireOwnershipFor(Thread t, boolean force) {
 		if((this.isNotOwned() || force) && !this.isOwnedBy(t)) {
-			this.logger.log(this, "Aquiring Ownership", t);
+			this.logger.vLog(this, "Aquiring Ownership For", new Object[]{t, force});
 			this.currentOwner = t;
 		}
 
-		return this.isOwnedBy(t);
+		boolean out = this.isOwnedBy(t);
+		this.logger.vLog(this, "Now Owned By", new Object[]{t, out});
+		return out;
 	}
 
 	@Override
 	public synchronized void relinquishOwnershipFor(Thread t) throws IllegalArgumentException {
 		if (t==null){
+			this.logger.vError(this, "Relinquishing Ownership For Null");
 			throw new IllegalArgumentException("Cannot relinquish ownership for a null owner.");
 		}
 		if (this.isOwnedBy(t)) {
-			this.logger.log(this, "Relinquishing Ownership", t);
+			this.logger.vLog(this, "Relinquishing Ownership", t);
 			currentOwner = null;
 		}
 	}

@@ -7,6 +7,7 @@ import org.team5940.robot_core.modules.testable.TestRunnerModule;
 import org.team5940.robot_core.modules.testable.TestableModule;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
 
 /**
  * Implementation of AccelerometerModule for the built in roborio accelerometer.
@@ -19,7 +20,7 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 	/**
 	 * Stores the roborio accelerometer.
 	 */
-	BuiltInAccelerometer accelerometer;
+	BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
 
 	/**
 	 * The direction of the roborio.
@@ -82,21 +83,25 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 
 	/**
 	 * Sets the axis that are swapped.
-	 * 
-	 * @param axisSwap
-	 *            the axis to swap to.
+	 * @param axisSwap the axis to swap to.
+	 * @throws IllegalArgumentException If axisSwap is null.
 	 */
-	public void setAxisSwap(RoborioAxisSwitch axisSwap) {
+	public void setAxisSwap(RoborioAxisSwitch axisSwap) throws IllegalArgumentException {
+		if(axisSwap == null) {
+			this.logger.vError(this, "Axis Swap With Null");
+		}
+		this.logger.vLog(this, "Setting Axis Swap", axisSwap);
 		this.axisSwap = axisSwap;
 	}
 
 	/**
-	 * get the axis swap.
+	 * Gets the axis swap.
 	 * 
 	 * @return the current axis swap.
 	 */
-	public RoborioAxisSwitch getDirection() {
-		return axisSwap;
+	public RoborioAxisSwitch getAxisSwap() {
+		this.logger.vLog(this, "Getting Axis Swap", this.axisSwap);
+		return this.axisSwap;
 	}
 
 	/**
@@ -118,6 +123,7 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 	public RoborioAccelerometerModule(String name, LoggerModule logger, RoborioAxisSwitch axisSwap,
 			boolean xAxisInverted, boolean yAxisInverted, boolean zAxisInverted) {
 		super(name, new ModuleHashTable<>(), logger);
+		this.logger.log(this, "Creating RoborioAccelerometerModule", new Object[]{axisSwap, xAxisInverted, yAxisInverted, zAxisInverted});
 		this.axisSwap = axisSwap;
 		if (xAxisInverted) {
 			this.xAxisInversion = -1;
@@ -138,53 +144,74 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 
 	@Override
 	public void initialize() {
-		this.accelerometer = new BuiltInAccelerometer();
+		this.logger.log(this, "Initializing");
 	}
 
 	@Override
 	public void shutDown() {
-		// Nothing to do here
+		this.logger.log(this, "Shutting Down");
 	}
 
 	@Override
 	public double getX() {
+		double out;
 		switch (axisSwap) {
 		case XYZ:
 		case XZY:
-			return this.accelerometer.getX() * this.xAxisInversion;
+			out = this.accelerometer.getX() * this.xAxisInversion;
+			this.logger.vLog(this, "Getting X", out);
+			return out;
 		case ZYX:
 		case ZXY:
-			return this.accelerometer.getZ() * this.zAxisInversion;
+			out = this.accelerometer.getZ() * this.zAxisInversion;
+			this.logger.vLog(this, "Getting X", out);
+			return out;
 		default:
-			return this.accelerometer.getY() * this.yAxisInversion;
+			out = this.accelerometer.getY() * this.yAxisInversion;
+			this.logger.vLog(this, "Getting X", out);
+			return out;
 		}
 	}
 
 	@Override
 	public double getY() {
+		double out;
 		switch (axisSwap) {
 		case XYZ:
 		case ZYX:
-			return this.accelerometer.getY() * this.yAxisInversion;
+			out = this.accelerometer.getY() * this.yAxisInversion;
+			this.logger.vLog(this, "Getting Y", out);
+			return out;
 		case YZX:
 		case XZY:
-			return this.accelerometer.getZ() * this.zAxisInversion;
+			out = this.accelerometer.getZ() * this.zAxisInversion;
+			this.logger.vLog(this, "Getting Y", out);
+			return out;
 		default:
-			return this.accelerometer.getX() * this.xAxisInversion;
+			out = this.accelerometer.getX() * this.xAxisInversion;
+			this.logger.vLog(this, "Getting Y", out);
+			return out;
 		}
 	}
 
 	@Override
 	public double getZ() {
+		double out;
 		switch (axisSwap) {
 		case XYZ:
 		case YXZ:
-			return this.accelerometer.getZ() * this.zAxisInversion;
+			out = this.accelerometer.getZ() * this.zAxisInversion;
+			this.logger.vLog(this, "Getting Z", out);
+			return out;
 		case YZX:
 		case ZYX:
-			return this.accelerometer.getX() * this.xAxisInversion;
+			out = this.accelerometer.getX() * this.xAxisInversion;
+			this.logger.vLog(this, "Getting Z", out);
+			return out;
 		default:
-			return this.accelerometer.getY() * this.yAxisInversion;
+			out = this.accelerometer.getY() * this.yAxisInversion;
+			this.logger.vLog(this, "Getting Z", out);
+			return out;
 		}
 	}
 

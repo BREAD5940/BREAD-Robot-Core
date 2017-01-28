@@ -20,10 +20,11 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	/**
 	 * Stores the logger for this module.
 	 */
-	protected LoggerModule logger;
+	protected LoggerModule logger;//TODO add one, otherwise null
 	
 	@Override
 	public String getName() {
+		this.logger.log(this, "Name Accessed", "robot");
 		return "robot";
 	}
 
@@ -31,23 +32,32 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	public ModuleHashTable<? extends Module> getSubModules() {
 		ModuleHashTable<Module> subModules = new ModuleHashTable<Module>();
 		subModules.putAll(this.subModules);
+		this.logger.vLog(this, "SubModules Accessed", subModules);
 		return subModules;
 	}
 	
 	/**
 	 * Adds a submodule to RobotModule.
 	 * @param subModule the subModule to add.
+	 * @throws IllegalArgumentException If submodule null.
 	 */
-	protected void addSubModule(Module subModule) {
+	protected void addSubModule(Module subModule) throws IllegalArgumentException{
+		if(subModule == null) {
+			this.logger.vError(this, "Adding Submodule With Null");
+		}
+		this.logger.log(this, "Adding SubModule", subModule);
 		subModules.put(subModule);
 	}
 	
 	
 	@Override
 	public void setLogger(LoggerModule logger) throws IllegalArgumentException {
-		if (logger == null) throw new IllegalArgumentException("Logger is null!");
+		if (logger == null) {
+			this.logger.vError(this, "Setting Logger With Null");
+			throw new IllegalArgumentException("Logger is null!");
+		}
+		logger.vLog(this, "Logger Switched To", new Object[]{this.logger, logger});
 		this.logger = logger;
-		
 	}
 	
 	/**
@@ -59,8 +69,11 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	 */
 	@Override
 	protected void robotInit() {
+		this.logger.log(this, "Creating SubModules");
 		createSubmodules();
+		this.logger.log(this, "Initializing");
 		this.initialize();
+		this.logger.log(this, "Initializing SubModules");
 		for (Module subModule : subModules.getAllSubModules().values()) {
 			subModule.initialize();
 		}
@@ -79,9 +92,11 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	 */
 	@Override
 	protected void disabled() {
+		this.logger.log(this, "Shutting Down SubModules");
 		for (Module subModule : subModules.getAllSubModules().values()) {
 			subModule.shutDown();
 		}
+		this.logger.log(this, "Shutting Down");
 		this.shutDown();
 	};
 }
