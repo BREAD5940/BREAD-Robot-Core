@@ -3,6 +3,8 @@ package org.team5940.robot_core.modules.functional.shifters;
 import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.SimpleOwnableModule;
+import org.team5940.robot_core.modules.testable.TestRunnerModule;
+import org.team5940.robot_core.modules.testable.TestableModule.TestResult;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -73,6 +75,47 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	public int getNumberOfGears() {
 		this.logger.vLog(this, "Getting Number Of Gears", 2);
 		return 2;
+	}
+	/**
+	 * A tester for the DoubleSolenoidShifterModule.
+	 * @param testRunner The test runner for running the test.
+	 * @return The test result.
+	 * @throws IllegalArgumentException Throwing the IllegalArgumentException.
+	 */
+	public TestResult runTest(TestRunnerModule testRunner) throws IllegalArgumentException{
+		if(testRunner == null) {
+			this.logger.vError(this, "Test Run With Null testRunner");
+			throw new IllegalArgumentException("testRunner null");
+		}
+		boolean testsGood = true;
+		
+		try {
+			setShift(0);
+			while(testRunner.getNewReturn())testRunner.promptText("Did it shift to Low gear?(y/n)");
+			if(testRunner.getReturnedText()=="y"){
+				this.logger.vLog(this, "Low gear shift test Passed");
+
+			}
+			else{
+				this.logger.vLog(this, "Low gear shift test FAILED");
+				testsGood=false;
+			}
+			setShift(1);
+			while(testRunner.getNewReturn())testRunner.promptText("Did it shift to High gear?(y/n)");
+			if(testRunner.getReturnedText()=="y"){
+				this.logger.vLog(this, "High gear shift test Passed");
+
+			}
+			else{
+				this.logger.vLog(this, "High gear shift test FAILED");
+				testsGood=false;
+			}
+		}catch (Exception e) {
+			return TestResult.ERROR;
+		}
+		
+		if(testsGood) return TestResult.SUCCESSFUL;
+		else return TestResult.FAILED;
 	}
 
 }
