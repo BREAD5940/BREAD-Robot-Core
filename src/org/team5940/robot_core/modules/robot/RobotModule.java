@@ -3,6 +3,7 @@ package org.team5940.robot_core.modules.robot;
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
+import org.team5940.robot_core.modules.logging.NullLoggerModule;
 
 import edu.wpi.first.wpilibj.SampleRobot;
 /**
@@ -20,7 +21,7 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	/**
 	 * Stores the logger for this module.
 	 */
-	protected LoggerModule logger;//TODO add one, otherwise null
+	protected LoggerModule logger = new NullLoggerModule();
 	
 	@Override
 	public String getName() {
