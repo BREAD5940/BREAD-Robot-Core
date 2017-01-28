@@ -38,7 +38,6 @@ public abstract class SimpleModule implements Module {
 	
 	@Override
 	public String getName() {
-		this.logger.vLog(this, "Name Accessed", this.name);
 		return this.name;
 	}
 	

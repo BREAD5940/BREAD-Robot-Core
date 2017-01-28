@@ -25,7 +25,6 @@ public abstract class RobotModule extends SampleRobot implements Module {
 	
 	@Override
 	public String getName() {
-		this.logger.log(this, "Name Accessed", "robot");
 		return "robot";
 	}
 
