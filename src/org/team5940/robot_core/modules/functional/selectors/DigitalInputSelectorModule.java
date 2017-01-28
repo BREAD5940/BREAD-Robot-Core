@@ -57,7 +57,7 @@ public class DigitalInputSelectorModule extends SimpleModule implements Selector
 	 * @param invert Stores if the DigitalInput is inverted.
 	 * @throws IllegalArgumentException if input == null.
 	 */
-	public synchronized void addDigitalInput(DigitalInput input, boolean invert) throws IllegalArgumentException{
+	public synchronized DigitalInputSelectorModule addDigitalInput(DigitalInput input, boolean invert) throws IllegalArgumentException{
 		if (input == null) {
 			this.logger.vError(this, "Adding DigitalInput With Null", new Object[]{input, invert});
 			throw new IllegalArgumentException("Values should not be null");
@@ -66,6 +66,7 @@ public class DigitalInputSelectorModule extends SimpleModule implements Selector
 		this.inputs.add(input);
 		this.inverts.add(invert);
 		this.logger.log(this, "Added a DigitalInput", new Object[]{input, invert});
+		return this;
 	}
 
 	/**
