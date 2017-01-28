@@ -28,17 +28,17 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 	RoborioAxisSwitch axisSwap;
 
 	/**
-	 * the inversion of the x axis.
+	 * The inversion of the x axis.
 	 */
 	int xAxisInversion;
 
 	/**
-	 * the inversion of the y axis.
+	 * The inversion of the y axis.
 	 */
 	int yAxisInversion;
 
 	/**
-	 * the inversion of the z axis.
+	 * The inversion of the z axis.
 	 */
 	int zAxisInversion;
 
@@ -82,48 +82,24 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 	}
 
 	/**
-	 * Sets the axis that are swapped.
-	 * @param axisSwap the axis to swap to.
-	 * @throws IllegalArgumentException If axisSwap is null.
-	 */
-	public void setAxisSwap(RoborioAxisSwitch axisSwap) throws IllegalArgumentException {
-		if(axisSwap == null) {
-			this.logger.vError(this, "Axis Swap With Null");
-		}
-		this.axisSwap = axisSwap;
-		this.logger.vLog(this, "Created RoborioAccelerometerModule", axisSwap);
-	}
-
-	/**
-	 * Gets the axis swap.
-	 * 
-	 * @return the current axis swap.
-	 */
-	public RoborioAxisSwitch getAxisSwap() {
-		this.logger.vLog(this, "Getting Axis Swap", this.axisSwap);
-		return this.axisSwap;
-	}
-
-	/**
 	 * {@inheritDoc}
 	 * 
 	 * @param name
-	 *            the name of the module.
+	 *            The name of the module.
 	 * @param logger
-	 *            the logger for the module.
+	 *            The logger for the module.
 	 * @param axisSwap
-	 *            the axis that are swapped which happens before inversion. 
+	 *            The axis that are swapped which happens before inversion.
 	 * @param xAxisInverted
-	 *            the inversion of the x axis.
+	 *            The inversion of the x axis.
 	 * @param yAxisInverted
-	 *            the inversion of the y axis.
+	 *            The inversion of the y axis.
 	 * @param zAxisInverted
-	 *            the inversion of the z axis.
+	 *            The inversion of the z axis.
 	 */
 	public RoborioAccelerometerModule(String name, LoggerModule logger, RoborioAxisSwitch axisSwap,
 			boolean xAxisInverted, boolean yAxisInverted, boolean zAxisInverted) {
 		super(name, new ModuleHashTable<>(), logger);
-		this.logger.log(this, "Creating RoborioAccelerometerModule", new Object[]{axisSwap, xAxisInverted, yAxisInverted, zAxisInverted});
 		this.axisSwap = axisSwap;
 		if (xAxisInverted) {
 			this.xAxisInversion = -1;
@@ -140,6 +116,34 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		} else {
 			this.zAxisInversion = 1;
 		}
+		this.logger.log(this, "Created RoborioAccelerometerModule",
+				new Object[] { axisSwap, xAxisInverted, yAxisInverted, zAxisInverted });
+	}
+
+	/**
+	 * Sets the axis that are swapped.
+	 * 
+	 * @param axisSwap
+	 *            The axis to swap to.
+	 * @throws IllegalArgumentException
+	 *             If axisSwap is null.
+	 */
+	public void setAxisSwap(RoborioAxisSwitch axisSwap) throws IllegalArgumentException {
+		if (axisSwap == null) {
+			this.logger.vError(this, "Axis Swapped With Null");
+		}
+		this.axisSwap = axisSwap;
+		this.logger.vLog(this, "Axis Swapped", axisSwap);
+	}
+
+	/**
+	 * Gets the axis swap.
+	 * 
+	 * @return The current axis swap.
+	 */
+	public RoborioAxisSwitch getAxisSwap() {
+		this.logger.vLog(this, "Getting Axis Swap", this.axisSwap);
+		return this.axisSwap;
 	}
 
 	@Override
@@ -223,22 +227,36 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		try {
 			while (!testRunner.getNewReturn())
 				testRunner.promptText("Is this showing the proper x axis acceleration (y/n): " + this.getX());
-			if (testRunner.getReturnedText().equals("n"))
+			if (testRunner.getReturnedText().equals("n")) {
+				this.logger.vLog(this, "X Accelerometer Test Failed", this.getX());
 				testSuccess = false;
+			} else
+				this.logger.vLog(this, "X Accelerometer Test Passed", this.getX());
 			while (!testRunner.getNewReturn())
 				testRunner.promptText("Is this showing the proper y axis acceleration (y/n): " + this.getY());
-			if (testRunner.getReturnedText().equals("n"))
+			if (testRunner.getReturnedText().equals("n")) {
 				testSuccess = false;
+				this.logger.vLog(this, "Y Accelerometer Test Failed", this.getY());
+			} else
+				this.logger.vLog(this, "Y Accelerometer Test Passed", this.getY());
 			while (!testRunner.getNewReturn())
 				testRunner.promptText("Is this showing the proper z axis acceleration (y/n): " + this.getZ());
 			if (testRunner.getReturnedText().equals("n"))
+			{
+				this.logger.vLog(this, "Z Accelerometer Test Passed", this.getZ());
 				testSuccess = false;
+			}
+			else this.logger.vLog(this, "Z Accelerometer Test Passed", this.getZ());
 
 		} catch (Exception e) {
+			this.logger.vLog(this, "Accelerometer Test Errored");
 			return TestResult.ERROR;
 		}
-		if (testSuccess)
+		if (testSuccess) {
+			this.logger.vLog(this, "Accelerometer Test Passed");
 			return TestResult.SUCCESSFUL;
+		}
+		this.logger.vLog(this, "Accelerometer Test Failed");
 		return TestResult.FAILED;
 	}
 
