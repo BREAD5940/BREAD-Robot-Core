@@ -10,6 +10,12 @@ public class SystemLoggerModule extends GenericLoggerModule {
 		super(name, subModules, logger, verbose);
 		this.logger.log(this, "Created SystemLoggerModule");
 	}
+	
+	public SystemLoggerModule(String name, boolean verbose)
+			throws IllegalArgumentException {
+		super(name, new ModuleHashTable<>(), new NullLoggerModule(), verbose);
+		this.logger.log(this, "Created SystemLoggerModule");
+	}
 
 	@Override
 	protected void log(String log) {
