@@ -31,4 +31,22 @@ public interface TestRunnerModule extends ProcedureModule {
 			} catch (InterruptedException e) { }
 		}
 	}
+	
+	
+	public default String promptAndGetReturn(String text) throws IllegalArgumentException{
+		this.promptText(text);
+		this.delayUntilNewReturn();
+		return this.getReturnedText();
+		
+	}
+	
+	public default boolean promptAndGetReturnBoolean(String text) throws IllegalArgumentException{
+		String input = this.promptAndGetReturn(text);
+		while(!input.equals("y")&&!input.equals("n")){
+			this.promptAndGetReturn("Not y/n. " + text);
+			
+		} 
+		if (input.equals("y")) return true; else return false;
+		
+	}
 }

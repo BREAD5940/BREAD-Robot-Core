@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules.functional;
+package org.team5940.robot_core.modules.functional.selectors;
 
 import org.team5940.robot_core.modules.Module;
 /**
@@ -16,7 +16,7 @@ public interface SelectorModule extends Module {
 	
 	/**
 	 * Gets the current state of this module.
-	 * @return The current state of the module. Between 0 inclusive and getNumOfStates inclusive.
+	 * @return The current state of the module. Between 0 inclusive and getNumOfStates inclusive. Or -1 if no selected states were found.
 	 */
 	public int currentState ();
 }
