@@ -17,8 +17,8 @@ public abstract class GenericLoggerModule extends SimpleModule implements Logger
 	
 	public GenericLoggerModule(String name, ModuleHashTable<Module> subModules, LoggerModule logger, boolean verbose) throws IllegalArgumentException {
 		super(name, subModules, logger);
-		this.logger.log(this, "Creating GenericLoggerModule", verbose);
 		this.verbose = verbose;
+		this.logger.log(this, "Created GenericLoggerModule", verbose);
 	}
 	
 	@Override

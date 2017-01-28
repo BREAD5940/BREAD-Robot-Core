@@ -17,9 +17,7 @@ import edu.wpi.first.wpilibj.GenericHID;
  */
 public class GenericControlsModule extends SimpleModule implements ControlsModule, TestableModule {
 	
-	public GenericControlsModule(String name, LoggerModule logger) throws IllegalArgumentException {
-		super(name, new ModuleHashTable<>(), logger);
-	}
+
 	
 	/**
 	 * Stores the {@link GenericHID}s for the axes.
@@ -32,6 +30,11 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	private Hashtable<String, Integer> axisControlAxes = new Hashtable<>();
 	
 	/**
+	 * Stores the inversion for the axes.
+	 */
+	private Hashtable<String, Boolean> axesIsInverted=new Hashtable<>();
+	
+	/**
 	 * Stores the {@link GenericHID}s for the buttons.
 	 */
 	private Hashtable<String, GenericHID> buttonControlDevices = new Hashtable<>();
@@ -41,9 +44,15 @@ public class GenericControlsModule extends SimpleModule implements ControlsModul
 	 */
 	private Hashtable<String, Integer> buttonControlButtons = new Hashtable<>();
 	
+	/**
+	 * Stores the inversion for the buttons.
+	 */
 	private Hashtable<String, Boolean> buttonIsInverted=new Hashtable<>();
 	
-	private Hashtable<String, Boolean> axesIsInverted=new Hashtable<>();
+	public GenericControlsModule(String name, LoggerModule logger) throws IllegalArgumentException {
+		super(name, new ModuleHashTable<>(), logger);
+		this.logger.log(this, "Created GenericControlsModule");
+	}
 	
 	@Override
 	public synchronized void initialize() {

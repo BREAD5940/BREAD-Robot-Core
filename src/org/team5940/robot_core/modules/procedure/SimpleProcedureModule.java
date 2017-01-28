@@ -49,10 +49,10 @@ public abstract class SimpleProcedureModule extends SimpleModule implements Proc
 			logger.vError(this, "SimpleProcedureModule Created With Null", requiredModules);
 			throw new IllegalArgumentException("Argument null!");
 		}
-		logger.log(this, "Creating SimpleProcedureModule", new Object[]{subModules, requiredModules, forceOwnership, millisDelay});
 		this.requiredModules = requiredModules;
 		this.forceOwnership = forceOwnership;
 		this.millisDelay = millisDelay;
+		logger.log(this, "Created SimpleProcedureModule", new Object[]{subModules, requiredModules, forceOwnership, millisDelay});
 	}
 	
 	/**

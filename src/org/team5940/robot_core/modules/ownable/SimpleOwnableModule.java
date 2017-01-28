@@ -25,7 +25,7 @@ public abstract class SimpleOwnableModule extends SimpleModule implements Ownabl
 	 */
 	public SimpleOwnableModule(String nameOfModule, ModuleHashTable<Module> subModules, LoggerModule logger) {
 		super(nameOfModule, subModules, logger);
-		this.logger.log(this, "Creating SimpleOwnableModule");
+		this.logger.log(this, "Created SimpleOwnableModule");
 	}
 
 	@Override

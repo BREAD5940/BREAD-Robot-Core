@@ -90,8 +90,8 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		if(axisSwap == null) {
 			this.logger.vError(this, "Axis Swap With Null");
 		}
-		this.logger.vLog(this, "Setting Axis Swap", axisSwap);
 		this.axisSwap = axisSwap;
+		this.logger.vLog(this, "Created RoborioAccelerometerModule", axisSwap);
 	}
 
 	/**

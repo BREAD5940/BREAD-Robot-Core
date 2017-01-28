@@ -30,10 +30,10 @@ public abstract class SimpleModule implements Module {
 			logger.vError(this, "SimpleModule Created With Null", new Object[]{name, subModules, logger});
 			throw new IllegalArgumentException("Argument null!");
 		}
-		logger.log(this, "Creating SimpleModule", new Object[]{name, subModules, logger});
 		this.name = name;
 		this.subModules = subModules;
 		this.logger = logger;
+		logger.log(this, "Created SimpleModule", new Object[]{name, subModules, logger});
 	}
 	
 	@Override

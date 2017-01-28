@@ -28,8 +28,8 @@ public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements 
 	public DoubleSolenoidShifterModule(String name, LoggerModule logger, int canPort, int chan1, int chan2)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashTable<>(), logger);
-		this.logger.log(this, "Creating DoubleSolenoidShifterModule", new Object[]{canPort, chan1, chan2});
 		this.solenoid = new DoubleSolenoid(canPort, chan1, chan2);
+		this.logger.log(this, "Created DoubleSolenoidShifterModule", new Object[]{canPort, chan1, chan2});
 	}
 
 	/**
