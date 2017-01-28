@@ -17,6 +17,9 @@ import edu.wpi.first.wpilibj.ADXL345_I2C.Axes;
  */
 public class RoborioAccelerometerModule extends SimpleModule implements AccelerometerModule, TestableModule {
 
+	
+	double scaleFactor = 9.80665;
+	
 	/**
 	 * Stores the roborio accelerometer.
 	 */
@@ -164,17 +167,15 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		case XZY:
 			out = this.accelerometer.getX() * this.xAxisInversion;
 			this.logger.vLog(this, "Getting X", out);
-			return out;
 		case ZYX:
 		case ZXY:
 			out = this.accelerometer.getZ() * this.zAxisInversion;
 			this.logger.vLog(this, "Getting X", out);
-			return out;
 		default:
 			out = this.accelerometer.getY() * this.yAxisInversion;
 			this.logger.vLog(this, "Getting X", out);
-			return out;
 		}
+		return out * this.scaleFactor;
 	}
 
 	@Override
@@ -185,17 +186,15 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		case ZYX:
 			out = this.accelerometer.getY() * this.yAxisInversion;
 			this.logger.vLog(this, "Getting Y", out);
-			return out;
 		case YZX:
 		case XZY:
 			out = this.accelerometer.getZ() * this.zAxisInversion;
 			this.logger.vLog(this, "Getting Y", out);
-			return out;
 		default:
 			out = this.accelerometer.getX() * this.xAxisInversion;
 			this.logger.vLog(this, "Getting Y", out);
-			return out;
 		}
+		return out * this.scaleFactor;
 	}
 
 	@Override
@@ -206,17 +205,15 @@ public class RoborioAccelerometerModule extends SimpleModule implements Accelero
 		case YXZ:
 			out = this.accelerometer.getZ() * this.zAxisInversion;
 			this.logger.vLog(this, "Getting Z", out);
-			return out;
 		case YZX:
 		case ZYX:
 			out = this.accelerometer.getX() * this.xAxisInversion;
 			this.logger.vLog(this, "Getting Z", out);
-			return out;
 		default:
 			out = this.accelerometer.getY() * this.yAxisInversion;
 			this.logger.vLog(this, "Getting Z", out);
-			return out;
 		}
+		return out * scaleFactor;
 	}
 
 	@Override
