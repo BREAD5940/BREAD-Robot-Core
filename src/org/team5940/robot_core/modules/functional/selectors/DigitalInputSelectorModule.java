@@ -2,7 +2,6 @@ package org.team5940.robot_core.modules.functional.selectors;
 
 import java.util.ArrayList;
 
-import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.SimpleModule;
 import org.team5940.robot_core.modules.logging.LoggerModule;
@@ -78,11 +77,13 @@ public class DigitalInputSelectorModule extends SimpleModule implements Selector
 		
 		
 		for (int i = 0; i < inputs.size();i++){
-			if(this.inputs.get(i).get() ^ this.inverts.get(i)) return i;
-			this.logger.log(this, "Getting a State", i);
+			if(this.inputs.get(i).get() ^ this.inverts.get(i)) {
+				this.logger.vLog(this, "Current State", i);
+				return i;
+			}
 			
 		}
-		this.logger.log(this, "Did not get a state");
+		this.logger.vLog(this, "No Current State");
 		return -1;
 	}
 	
@@ -112,7 +113,7 @@ public class DigitalInputSelectorModule extends SimpleModule implements Selector
 				while (!testRunner.promptAndGetReturnBoolean("Is The Selector In The Stated Postion? y/n."));
 				if (this.currentState() != i){
 					testsGood = false;
-					this.logger.error(this, "Selector Test Failed Selector Position " + i, inputs);
+					this.logger.vError(this, "Selector Test Failed Selector Position " + i, inputs);
 				}
 				
 			}
@@ -121,11 +122,11 @@ public class DigitalInputSelectorModule extends SimpleModule implements Selector
 			return TestResult.ERROR;
 		}
 		if(testsGood){ 
-			logger.log(this, "Selector test was succesful"); 
+			logger.vLog(this, "Selector test was succesful"); 
 			return TestResult.SUCCESSFUL; 
 			}
 		else { 
-			logger.log(this, "Selector test was failed");	
+			logger.vLog(this, "Selector test was failed");	
 			return TestResult.FAILED;
 				}
 		
