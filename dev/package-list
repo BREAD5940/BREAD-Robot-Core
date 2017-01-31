@@ -1,5 +1,11 @@
+org
 org.team5940.robot_core.modules
 org.team5940.robot_core.modules.functional
+org.team5940.robot_core.modules.functional.accelerometer
+org.team5940.robot_core.modules.functional.controls
+org.team5940.robot_core.modules.functional.pistons
+org.team5940.robot_core.modules.functional.selectors
+org.team5940.robot_core.modules.functional.shifters
 org.team5940.robot_core.modules.logging
 org.team5940.robot_core.modules.ownable
 org.team5940.robot_core.modules.procedure
