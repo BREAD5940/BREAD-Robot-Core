@@ -4,6 +4,7 @@ import org.team5940.robot_core.modules.ModuleHashTable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.SimpleOwnableModule;
 import org.team5940.robot_core.modules.testable.TestRunnerModule;
+import org.team5940.robot_core.modules.testable.TestableModule;
 import org.team5940.robot_core.modules.testable.TestableModule.TestResult;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 * @author Alexander Loeffler
 */
 
-public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements ShifterModule{
+public class DoubleSolenoidShifterModule extends SimpleOwnableModule implements ShifterModule, TestableModule {
 	
 	private DoubleSolenoid solenoid;
 	private short currentGear = 0;
