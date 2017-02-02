@@ -63,6 +63,7 @@ public abstract class GenericLoggerModule extends SimpleModule implements Logger
 	 * @return The module's stamp.
 	 */
 	private String getModuleStamp(Module module) {
+		if(module == null) return "<null>";
 		return "<" + module.getClass().getSimpleName() + ": " + module.getName() + ">";
 	}
 	
@@ -72,6 +73,7 @@ public abstract class GenericLoggerModule extends SimpleModule implements Logger
 	 * @return The object's stamp.
 	 */
 	private String getObjectStamp(Object object) {
+		if(object == null) return "<null>";
 		return "<" + object.toString() + ">";
 	}
 	
@@ -81,6 +83,7 @@ public abstract class GenericLoggerModule extends SimpleModule implements Logger
 	 * @return The array's stamp.
 	 */
 	private String getArrayStamp(Object[] array) {
+		if(array == null) return "<null>";
 		return "<" + Arrays.deepToString(array) + ">";
 	}
 
