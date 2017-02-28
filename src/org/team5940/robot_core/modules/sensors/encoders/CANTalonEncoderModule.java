@@ -1,4 +1,4 @@
-package org.team5940.robot_core.sensors.encoders;
+package org.team5940.robot_core.modules.sensors.encoders;
 
 import org.team5940.robot_core.modules.AbstractModule;
 import org.team5940.robot_core.modules.Module;
