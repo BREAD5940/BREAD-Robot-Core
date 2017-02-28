@@ -17,3 +17,4 @@ org.team5940.robot_core.modules.sensors.rotational
 org.team5940.robot_core.modules.sensors.selectors
 org.team5940.robot_core.modules.testing
 org.team5940.robot_core.modules.testing.communication
+org.team5940.robot_core.sensors.encoders
