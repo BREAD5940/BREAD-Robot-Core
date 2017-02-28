@@ -11,7 +11,7 @@ import org.team5940.robot_core.modules.sensors.selectors.SelectorModule;
  * @author David Boles
  *
  */
-public class SelectableProcedureRunnerModule extends AbstractProcedureModule {
+public class SelectableProcedureRunnerModule extends AbstractProcedureModule {//TODO make single shot
 
 	/**
 	 * Stores this' selector.
