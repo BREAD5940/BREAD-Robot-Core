@@ -8,7 +8,6 @@ org.team5940.robot_core.modules.control.procedures
 org.team5940.robot_core.modules.control.threads
 org.team5940.robot_core.modules.logging
 org.team5940.robot_core.modules.ownable
-org.team5940.robot_core.modules.robot
 org.team5940.robot_core.modules.sensors.axes
 org.team5940.robot_core.modules.sensors.binary_input
 org.team5940.robot_core.modules.sensors.linear
