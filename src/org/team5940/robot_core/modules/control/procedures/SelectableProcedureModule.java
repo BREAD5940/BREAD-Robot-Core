@@ -11,7 +11,7 @@ import org.team5940.robot_core.modules.sensors.selectors.SelectorModule;
  * @author David Boles
  *
  */
-public class SelectableProcedureRunnerModule extends AbstractProcedureModule {//TODO make single shot
+public class SelectableProcedureModule extends AbstractProcedureModule {//TODO make single shot
 
 	/**
 	 * Stores this' selector.
@@ -39,7 +39,7 @@ public class SelectableProcedureRunnerModule extends AbstractProcedureModule {//
 	private ProcedureModule lastUpdated;
 	
 	/**
-	 * Initializes a new {@link SelectableProcedureRunnerModule}.
+	 * Initializes a new {@link SelectableProcedureModule}.
 	 * @param name This' name.
 	 * @param logger This' logger.
 	 * @param selector The selector that determines what procedure to run.
@@ -49,18 +49,18 @@ public class SelectableProcedureRunnerModule extends AbstractProcedureModule {//
 	 * @throws IllegalArgumentException Thrown if any argument is null, procedures contains a null procedure, or the number of selector states does not equal the number of procedures.
 	 * 
 	 */
-	public SelectableProcedureRunnerModule(String name, LoggerModule logger, SelectorModule selector, ProcedureModule unselectedProcedure, ProcedureModule[] procedures, boolean forceDependencyAquisition)
+	public SelectableProcedureModule(String name, LoggerModule logger, SelectorModule selector, ProcedureModule unselectedProcedure, ProcedureModule[] procedures, boolean forceDependencyAquisition)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<Module>(procedures).chainPut(unselectedProcedure).chainPut(selector), logger);
-		this.logger.checkInitializationArgs(this, SelectableProcedureRunnerModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
-		if(procedures.length != selector.getNumberOfStates()) this.logger.failInitializationIllegal(this, SelectableProcedureRunnerModule.class, "Unequal Quantities", new Object[]{selector.getNumberOfStates(), procedures.length});
+		this.logger.checkInitializationArgs(this, SelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
+		if(procedures.length != selector.getNumberOfStates()) this.logger.failInitializationIllegal(this, SelectableProcedureModule.class, "Unequal Quantities", new Object[]{selector.getNumberOfStates(), procedures.length});
 		for(ProcedureModule procedure : procedures)
-			if(procedure == null) this.logger.failInitializationIllegal(this, SelectableProcedureRunnerModule.class, "Null Procedure", procedure);
+			if(procedure == null) this.logger.failInitializationIllegal(this, SelectableProcedureModule.class, "Null Procedure", procedure);
 		this.selector = selector;
 		this.unselectedProcedure = unselectedProcedure;
 		this.procedures = procedures;
 		this.forceDependencyAquisition = forceDependencyAquisition;
-		this.logger.logInitialization(this, SelectableProcedureRunnerModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
+		this.logger.logInitialization(this, SelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
 	}
 
 	@Override
