@@ -5,7 +5,7 @@ import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 
 /**
- * An implementation of {@link LoggerModule} that simply passes logging calls to up to four other loggers.
+ * An implementation of {@link LoggerModule} that simply passes logging calls to up to four other loggers depending on what type of log is being made.
  * @author Amit Harlev
  *
  */
