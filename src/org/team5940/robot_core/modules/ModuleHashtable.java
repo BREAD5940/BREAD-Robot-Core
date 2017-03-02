@@ -46,7 +46,7 @@ public class ModuleHashtable<T extends Module> extends Hashtable<String, T> {
 	 * @param initModules The modules to put in this ModuleList.
 	 * @throws IllegalArgumentException If initModules is null.
 	 */
-	public ModuleHashtable(Collection<T> initModules) throws IllegalArgumentException {
+	public ModuleHashtable(Collection<? extends T> initModules) throws IllegalArgumentException {
 		super();
 		if(initModules == null) throw new IllegalArgumentException("Initialized with null argument!");
 		for(T module : initModules) {
