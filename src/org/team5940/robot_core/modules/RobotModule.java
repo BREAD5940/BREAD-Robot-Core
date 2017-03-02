@@ -52,6 +52,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 			this.initializeRobotModules();
 			this.robotModulesInitialized = true;
 			this.dependencies.put(this.robotProcedure);
+			this.dependencies.put(this.logger);
 			HAL.observeUserProgramStarting();
 			this.logger.log(this, "Module Initialization Complete, Running Procedure", this.robotProcedure);
 			this.robotProcedure.run(true);
@@ -122,6 +123,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 		if(this.robotModulesInitialized)
 			this.logger.failSettingIllegal(this, "Robot Procedure", "Initialization Complete", logger);
 		this.logger.checkAndLogSettingArg(this, "Robot Logger", logger);
+		this.logger = logger;
 	}
 	
 	//MODULE STUFF
