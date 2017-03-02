@@ -49,22 +49,21 @@ public class SingleShotSelectableProcedureModule extends AbstractProcedureModule
 	 * @param procedures The procedures to run depending on the selected state.
 	 * @param forceDependencyAquisition Whether to force acquisition of the running procedure and its extended dependencies.
 	 * @throws IllegalArgumentException Thrown if any argument is null, procedures contains a null procedure, or the number of selector states does not equal the number of procedures.
-	 * 
 	 */
 	public SingleShotSelectableProcedureModule(String name, LoggerModule logger, SelectorModule selector, ProcedureModule unselectedProcedure, ProcedureModule[] procedures, boolean forceDependencyAquisition)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<Module>(procedures).chainPut(unselectedProcedure).chainPut(selector), logger);
-		this.logger.checkInitializationArgs(this, ContinuousSelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
+		this.logger.checkInitializationArgs(this, SingleShotSelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
 		if(procedures.length != selector.getNumberOfStates())
-			this.logger.failInitializationIllegal(this, ContinuousSelectableProcedureModule.class, "Unequal Quantities", new Object[]{selector.getNumberOfStates(), procedures.length});
+			this.logger.failInitializationIllegal(this, SingleShotSelectableProcedureModule.class, "Unequal Quantities", new Object[]{selector.getNumberOfStates(), procedures.length});
 		for(ProcedureModule procedure : procedures)
 			if(procedure == null)
-				this.logger.failInitializationIllegal(this, ContinuousSelectableProcedureModule.class, "Null Procedure", procedure);
+				this.logger.failInitializationIllegal(this, SingleShotSelectableProcedureModule.class, "Null Procedure", procedure);
 		this.selector = selector;
 		this.unselectedProcedure = unselectedProcedure;
 		this.procedures = procedures;
 		this.forceDependencyAquisition = forceDependencyAquisition;
-		this.logger.logInitialization(this, ContinuousSelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
+		this.logger.logInitialization(this, SingleShotSelectableProcedureModule.class, new Object[]{selector, unselectedProcedure, procedures, forceDependencyAquisition});
 	}
 
 	@Override

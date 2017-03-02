@@ -48,7 +48,6 @@ public class ContinuousSelectableProcedureModule extends AbstractProcedureModule
 	 * @param procedures The procedures to run depending on the selected state.
 	 * @param forceDependencyAquisition Whether to force acquisition of the running procedure and its extended dependencies.
 	 * @throws IllegalArgumentException Thrown if any argument is null, procedures contains a null procedure, or the number of selector states does not equal the number of procedures.
-	 * 
 	 */
 	public ContinuousSelectableProcedureModule(String name, LoggerModule logger, SelectorModule selector, ProcedureModule unselectedProcedure, ProcedureModule[] procedures, boolean forceDependencyAquisition)
 			throws IllegalArgumentException {
