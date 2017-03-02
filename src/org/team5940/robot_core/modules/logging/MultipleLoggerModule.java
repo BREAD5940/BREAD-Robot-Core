@@ -9,7 +9,7 @@ import org.team5940.robot_core.modules.ModuleHashtable;
  * @author David Boles
  *
  */
-public class CombinedLoggerModule extends AbstractModule implements LoggerModule {
+public class MultipleLoggerModule extends AbstractModule implements LoggerModule {
 	
 	/**
 	 * Stores this' verbosity.
@@ -27,7 +27,7 @@ public class CombinedLoggerModule extends AbstractModule implements LoggerModule
 	private final ModuleHashtable<LoggerModule> loggers;
 
 	/**
-	 * Initializes a new {@link CombinedLoggerModule}.
+	 * Initializes a new {@link MultipleLoggerModule}.
 	 * @param name This' name.
 	 * @param logger This' logger.
 	 * @param verbose Whether to initially log verbose logs.
@@ -35,14 +35,14 @@ public class CombinedLoggerModule extends AbstractModule implements LoggerModule
 	 * @param loggers The loggers to pass logs to.
 	 * @throws IllegalArgumentException Thrown if any argument is null.
 	 */
-	public CombinedLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, ModuleHashtable<LoggerModule> loggers)
+	public MultipleLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, ModuleHashtable<LoggerModule> loggers)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<Module>(loggers.values()), logger);
-		this.logger.checkInitializationArgs(this, CombinedLoggerModule.class, new Object[]{verbose, enabled, loggers});
+		this.logger.checkInitializationArgs(this, MultipleLoggerModule.class, new Object[]{verbose, enabled, loggers});
 		this.verbose = verbose;
 		this.enabled = enabled;
 		this.loggers = loggers;
-		this.logger.logInitialization(this, CombinedLoggerModule.class, new Object[]{verbose, enabled, loggers});
+		this.logger.logInitialization(this, MultipleLoggerModule.class, new Object[]{verbose, enabled, loggers});
 	}
 
 	@Override
