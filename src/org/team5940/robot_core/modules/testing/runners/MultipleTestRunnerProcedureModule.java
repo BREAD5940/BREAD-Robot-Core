@@ -4,6 +4,7 @@ import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.control.procedures.AbstractProcedureModule;
 import org.team5940.robot_core.modules.logging.LoggerModule;
+import org.team5940.robot_core.modules.ownable.OwnableModule;
 import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.TestableModule.TestStatus;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
@@ -116,6 +117,7 @@ public class MultipleTestRunnerProcedureModule extends AbstractProcedureModule {
 					userActionString = this.communicationModule.promptText(
 							"Would you like to search, list, or test, the TestableModules? (Enter no to leave)");
 					if (userActionString.toLowerCase().equals("test")) {
+						boolean test = true;
 						do {
 							testModuleName = this.communicationModule
 									.promptText("Which module would you like to test?");
@@ -123,9 +125,28 @@ public class MultipleTestRunnerProcedureModule extends AbstractProcedureModule {
 							if (testModule == null) {
 								testModule = this.testableModules.get(testModuleName.toLowerCase());
 							}
-						} while (testModule == null);
-						TestStatus testResult = testModule.runTest(this.communicationModule);
-						this.communicationModule.promptText("Test: " + testResult.toString() + " (ok to continue)");
+							if (testModule == null)
+								test = this.communicationModule.promptBoolean("Would you like to continue testing?");
+						} while (testModule == null && test);
+						
+						
+						if(test) {
+							ModuleHashtable<OwnableModule> extendedDependencies = testModule.getExtendedModuleDependencies().getAssignableTo(OwnableModule.class);
+							
+							if (testModule instanceof OwnableModule)
+								((OwnableModule) testModule).acquireOwnershipForCurrent(true);
+							for(OwnableModule dependency : extendedDependencies.values())
+								dependency.acquireOwnershipForCurrent(true);
+							
+							TestStatus testResult = testModule.runTest(this.communicationModule);
+							
+							if (testModule instanceof OwnableModule)
+								((OwnableModule) testModule).relinquishOwnershipForCurrent();
+							for(OwnableModule dependency : extendedDependencies.values())
+								dependency.relinquishOwnershipForCurrent();
+							
+							this.communicationModule.promptText("Test: " + testResult.toString() + " (ok to continue)");
+						}
 					} else if (userActionString.toLowerCase().equals("list")) {
 						String moduleNames = "Modules: ";
 						for (TestableModule module : this.testableModules.values()) {

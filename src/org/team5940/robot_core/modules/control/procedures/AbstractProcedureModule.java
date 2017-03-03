@@ -45,8 +45,9 @@ public abstract class AbstractProcedureModule extends AbstractOwnableModule impl
 	
 	/**
 	 * Cleans the procedure, could be called at any point.
+	 * @throws Exception Thrown if any fatal internal exception occurs.
 	 */
-	protected abstract void doProcedureClean();
+	protected abstract void doProcedureClean() throws Exception;
 	
 	
 	@Override
@@ -82,7 +83,11 @@ public abstract class AbstractProcedureModule extends AbstractOwnableModule impl
 	@Override
 	public synchronized void cleanProcedure() throws ThreadUnauthorizedException {
 		this.doAccessibilityCheck();
-		this.doProcedureClean();
+		try {
+			this.doProcedureClean();
+		}catch (Exception e) {
+			this.logger.error(this, "Exception Caught While Updating", e);
+		}
 		this.ready = true;
 	}
 

@@ -71,7 +71,7 @@ public class SingleShotSelectableProcedureModule extends AbstractProcedureModule
 		ProcedureModule toRun = this.unselectedProcedure;
 		int selection = this.selector.getCurrentState();
 		if(selection != -1) toRun = this.procedures[selection];
-		this.acquireAll(this.running);
+		this.acquireAll(toRun);
 		this.running = toRun;
 		this.running.startProcedure();
 		
