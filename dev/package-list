@@ -10,6 +10,7 @@ org.team5940.robot_core.modules.logging
 org.team5940.robot_core.modules.ownable
 org.team5940.robot_core.modules.sensors.axes
 org.team5940.robot_core.modules.sensors.binary_input
+org.team5940.robot_core.modules.sensors.encoders
 org.team5940.robot_core.modules.sensors.linear
 org.team5940.robot_core.modules.sensors.linear.accelerometers
 org.team5940.robot_core.modules.sensors.rotational
@@ -17,4 +18,3 @@ org.team5940.robot_core.modules.sensors.selectors
 org.team5940.robot_core.modules.testing
 org.team5940.robot_core.modules.testing.communication
 org.team5940.robot_core.modules.testing.runners
-org.team5940.robot_core.sensors.encoders
