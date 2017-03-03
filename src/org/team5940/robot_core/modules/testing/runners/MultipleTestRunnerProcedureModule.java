@@ -49,10 +49,10 @@ public class MultipleTestRunnerProcedureModule extends AbstractProcedureModule {
 	 * @throws IllegalArgumentException
 	 *             Thrown if argument is null.
 	 */
-	public MultipleTestRunnerProcedureModule(String name, ModuleHashtable<Module> dependencies, LoggerModule logger,
+	public MultipleTestRunnerProcedureModule(String name, LoggerModule logger,
 			ModuleHashtable<TestableModule> testableModules, TestCommunicationModule communicationModule)
 			throws IllegalArgumentException {
-		super(name, dependencies, logger);
+		super(name, new ModuleHashtable<Module>(testableModules.values()).chainPut(communicationModule), logger);
 		this.logger.checkInitializationArgs(this, MultipleTestRunnerProcedureModule.class,
 				new Object[] { testableModules, communicationModule });
 		this.testableModules = testableModules;
