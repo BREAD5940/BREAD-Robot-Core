@@ -100,7 +100,7 @@ public interface ProcedureModule extends OwnableModule, Runnable {
 		
 		@Override
 		public ModuleHashtable<Module> getModuleDependencies() {
-			return new ModuleHashtable<>();
+			return new ModuleHashtable<>(LoggerModule.INERT_LOGGER);
 		}
 		
 		@Override
