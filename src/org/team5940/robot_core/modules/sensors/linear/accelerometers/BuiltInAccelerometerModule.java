@@ -1,7 +1,6 @@
 package org.team5940.robot_core.modules.sensors.linear.accelerometers;
 
 import org.team5940.robot_core.modules.AbstractModule;
-import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.sensors.linear.LinearAccelerationModule;
@@ -39,9 +38,9 @@ public class BuiltInAccelerometerModule extends AbstractModule implements Linear
 	 * @param scaleFactor The scale factor to multiply the output by.
 	 * @throws IllegalArgumentException If any argument is null or 0>axis>2.
 	 */
-	public BuiltInAccelerometerModule(String name, ModuleHashtable<Module> dependencies, LoggerModule logger, int axis, int scaleFactor)
+	public BuiltInAccelerometerModule(String name, LoggerModule logger, int axis, int scaleFactor)
 			throws IllegalArgumentException {
-		super(name, dependencies, logger);
+		super(name, new ModuleHashtable<>(), logger);
 		if(axis < 0 || axis > 2) {
 			this.logger.failInitializationIllegal(this, BuiltInAccelerometerModule.class, "Out Of Bounds Axis", axis);
 		}
