@@ -100,10 +100,12 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 			Module c = (Module) o;
 			LoggerModule l = c.getModuleLogger();
 			boolean e = l.isEnabled();
-			l.setEnabled(false);
-			out += c.getModuleName();
-			if(!c.getClass().isAnonymousClass()) out += ": " + c.getClass().getSimpleName();
-			l.setEnabled(e);
+			synchronized(l) {
+				l.setEnabled(false);
+				out += c.getModuleName();
+				if(!c.getClass().isAnonymousClass()) out += ": " + c.getClass().getSimpleName();
+				l.setEnabled(e);
+			}
 			
 		}else if(o instanceof ModuleHashtable) {
 			for(Module i : ((ModuleHashtable<?>) o).values()) {
