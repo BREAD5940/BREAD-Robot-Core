@@ -4,8 +4,10 @@ org.team5940.robot_core.modules.actuators.motor_sets
 org.team5940.robot_core.modules.actuators.pistons
 org.team5940.robot_core.modules.actuators.shifters
 org.team5940.robot_core.modules.aggregates.drivetrains
+org.team5940.robot_core.modules.camera_streaming
 org.team5940.robot_core.modules.control.procedures
 org.team5940.robot_core.modules.control.threads
+org.team5940.robot_core.modules.image_processing
 org.team5940.robot_core.modules.logging
 org.team5940.robot_core.modules.ownable
 org.team5940.robot_core.modules.sensors.axes
