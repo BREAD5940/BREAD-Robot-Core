@@ -32,8 +32,8 @@ public class AggregateProcedureModule extends AbstractProcedureModule {
 	protected boolean doProcedureUpdate() throws Exception {
 		boolean allDone = true;
 		for(ProcedureModule p : this.procedures.values())
-			allDone = allDone && p.updateProcedure();
-		return false;
+			allDone = p.updateProcedure() && allDone;
+		return allDone;
 	}
 
 	@Override
