@@ -127,6 +127,6 @@ public class SelectableMJPEGStreamerModule extends AbstractProcedureModule {
 	 */
 	@Override
 	public void run(boolean forceAcquisition) {
-		super.run(forceAcquisition, 0);
+		super.run(forceAcquisition, 20);
 	}
 }

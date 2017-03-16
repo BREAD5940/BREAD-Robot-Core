@@ -68,7 +68,7 @@ public abstract class AbstractProcedureModule extends AbstractOwnableModule impl
 	@Override
 	public synchronized boolean updateProcedure() throws ThreadUnauthorizedException, IllegalStateException {
 		this.doAccessibilityCheck();
-		if(this.ready) throw new IllegalStateException("Already running!");
+		if(this.ready) throw new IllegalStateException("Not started!");
 		try {
 			if(!finished)finished = this.doProcedureUpdate();
 			this.logger.vLog(this, "Updated", finished);
