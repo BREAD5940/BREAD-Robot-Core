@@ -1,6 +1,8 @@
 package org.team5940.robot_core.modules.sensors.binary_input;
 
 import org.team5940.robot_core.modules.Module;
+import org.team5940.robot_core.modules.ModuleHashtable;
+import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
@@ -40,4 +42,28 @@ public interface BinaryInputModule extends Module, TestableModule {
 			return TestStatus.ERRORED;
 		}
 	}
+	
+	//TODO docs
+	public static final BinaryInputModule INERT_BINARY_INPUT = new BinaryInputModule() {
+		
+		@Override
+		public String getModuleName() {
+			return "inert_binary_input";
+		}
+		
+		@Override
+		public LoggerModule getModuleLogger() {
+			return LoggerModule.INERT_LOGGER;
+		}
+		
+		@Override
+		public ModuleHashtable<Module> getModuleDependencies() {
+			return new ModuleHashtable<>();
+		}
+		
+		@Override
+		public boolean getBinaryInput() {
+			return false;
+		}
+	};
 }
