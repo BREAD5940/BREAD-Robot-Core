@@ -14,7 +14,7 @@ public interface LinearVelocityActuatorModule extends OwnableModule {
 	 * Sets the velocity of the LinearVelocityActuatorModule.
 	 * 
 	 * @param velocity
-	 *            The velocity to set it to.
+	 *            The velocity in m/s to set it to.
 	 */
 	public void setLinearVelocity(double velocity);
 
