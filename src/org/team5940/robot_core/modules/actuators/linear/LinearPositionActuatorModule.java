@@ -13,7 +13,7 @@ public interface LinearPositionActuatorModule extends OwnableModule {
 	 * Sets the position of the LinearPositionActuatorModule.
 	 * 
 	 * @param position
-	 *            The position to adjust this to.
+	 *            The position in meters to adjust this to.
 	 */
 	public void setLinearPosition(double position);
 

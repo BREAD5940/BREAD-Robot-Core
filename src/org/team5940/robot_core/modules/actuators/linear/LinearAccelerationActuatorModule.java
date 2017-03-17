@@ -14,7 +14,7 @@ public interface LinearAccelerationActuatorModule extends OwnableModule {
 	 * Set the acceleration of the LinearAccelerationActuatorModule.
 	 * 
 	 * @param acceleration
-	 *            The acceleration to be set to.
+	 *            The acceleration in m/s to be set to.
 	 */
 	public void setLinearAcceleration(double acceleration);
 
