@@ -1,9 +1,9 @@
-package org.team5940.robot_core.modules.actuators;
+package org.team5940.robot_core.modules.actuators.linear;
 
 import org.team5940.robot_core.modules.ownable.OwnableModule;
 
 /**
- * Allows the person to set the position of the extended modules.
+ * Allows the person to set the linear position in meters of the extended modules.
  * 
  * @author Michael Bentley
  */
@@ -15,6 +15,6 @@ public interface LinearPositionActuatorModule extends OwnableModule {
 	 * @param position
 	 *            The position to adjust this to.
 	 */
-	public void setPosition(double position);
+	public void setLinearPosition(double position);
 
 }
