@@ -78,6 +78,7 @@ public class SelectableMJPEGStreamerModule extends AbstractProcedureModule {
 		this.sources = sources;
 		this.processors = processors;
 		this.output = CameraServer.getInstance().putVideo("Current View", 320, 240);
+		this.output.setFPS(15);
 		this.logger.logInitialization(this, SelectableMJPEGStreamerModule.class,
 				new Object[] {selector, unselectedSource, sources, processors});
 	}
