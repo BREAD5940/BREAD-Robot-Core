@@ -17,6 +17,7 @@ import org.team5940.robot_core.modules.testing.communication.TestCommunicationMo
  */
 public class LinearExtrapolatedEncoderModule extends AbstractModule implements LinearPositionModule, LinearVelocityModule {
 
+	//TODO docs
 	private final RotationalPositionModule positionSensor;
 	private final RotationalVelocityModule velocitySensor;
 	private final double wheelRadius;
