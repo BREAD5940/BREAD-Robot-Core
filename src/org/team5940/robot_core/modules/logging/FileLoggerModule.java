@@ -31,11 +31,12 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File loggerFile) throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger, verbose, enabled);
 		this.logger.checkInitializationArgs(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
-		loggerFile.delete();
+//		loggerFile.delete();
 		try {
 			loggerFile.createNewFile();
 		}catch(IOException e) {
-			this.logger.failInitializationIllegal(this, FileLoggerModule.class, "Unable To Create Given Files", new Object[] { verbose, enabled, loggerFile });
+			//this.logger.failInitializationIllegal(this, FileLoggerModule.class, "Unable To Create Given Files", new Object[] { verbose, enabled, loggerFile });
+			this.logger.error(this, "Unable To Create File", loggerFile);
 		}
 		this.loggerFile = loggerFile;
 		this.logger.logInitialization(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
