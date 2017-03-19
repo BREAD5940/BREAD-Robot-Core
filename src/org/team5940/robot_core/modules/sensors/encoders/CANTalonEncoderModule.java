@@ -23,35 +23,43 @@ public class CANTalonEncoderModule extends AbstractModule implements RotationalP
 	private final CANTalon talon;
 	
 	/** 
-	 * The ratio of encoder pulses to rotations.
+	 * The ratio of the read encoder position to radians.
 	 */
-	private final double pulsesToRotations;
+	private final double positionScaler;
+	
+	/**
+	 * The ratio of the read encoder velocity to radians/ sec.
+	 */
+	private final double velocityScaler;
 	
 	/** Initializes a new {@link CANTalonEncoderModule}.
 	 * @param name This' name.
 	 * @param logger The logger this is using.
 	 * @param talon The talon the encoder is connected to.
-	 * @param pulsesToRotation The pulses per rotation of the encoder (and gearbox if applicable).
+	 * @param positionScaler The ratio of the read encoder position to radians.
+	 * @param velocityScaler The ratio of the read encoder velocity to radians/ sec.
+	 * @throws IllegalArgumentException Thrown if any argument is null.
 	 */
-	public CANTalonEncoderModule(String name, LoggerModule logger, CANTalon talon, double pulsesToRotation)
+	public CANTalonEncoderModule(String name, LoggerModule logger, CANTalon talon, double positionScaler, double velocityScaler)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger);
-		this.logger.checkInitializationArgs(this, CANTalonEncoderModule.class, new Object[]{talon, pulsesToRotation});
+		this.logger.checkInitializationArgs(this, CANTalonEncoderModule.class, new Object[]{talon, positionScaler, velocityScaler});
 		this.talon = talon;
-		this.pulsesToRotations = pulsesToRotation;
-		logger.logInitialization(this, CANTalonEncoderModule.class, new Object[]{talon, pulsesToRotation});
+		this.positionScaler = positionScaler;
+		this.velocityScaler = velocityScaler;
+		logger.logInitialization(this, CANTalonEncoderModule.class, new Object[]{talon, positionScaler, velocityScaler});
 	}
 
 	@Override
 	public double getRotationalVelocity() {
-		double out = this.talon.getEncVelocity() * this.pulsesToRotations;
+		double out = this.talon.getEncVelocity() * this.velocityScaler;
 		this.logger.logGot(this, "Rotational Velocity", out);
 		return out;
 	}
 
 	@Override
 	public double getRotationalPosition() {
-		double out = talon.getEncPosition() * this.pulsesToRotations;
+		double out = talon.getEncPosition() * this.positionScaler;
 		this.logger.logGot(this, "Rotational Position", out);
 		return out;
 	}
