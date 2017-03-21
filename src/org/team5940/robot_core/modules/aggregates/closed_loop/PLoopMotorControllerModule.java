@@ -7,9 +7,12 @@ import org.team5940.robot_core.modules.actuators.linear.LinearVelocityActuatorMo
 import org.team5940.robot_core.modules.actuators.motor_sets.MotorSetModule;
 import org.team5940.robot_core.modules.actuators.rotational.RotationalPositionActuatorModule;
 import org.team5940.robot_core.modules.actuators.rotational.RotationalVelocityActuatorModule;
+import org.team5940.robot_core.modules.aggregates.drivetrains.TankDrivetrainModule;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.AbstractOwnableModule;
 import org.team5940.robot_core.modules.sensors.encoders.EncoderModule;
+import org.team5940.robot_core.modules.sensors.linear.LinearPositionSensorModule;
+import org.team5940.robot_core.modules.sensors.linear.LinearVelocitySensorModule;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,21 +20,23 @@ public class PLoopMotorControllerModule extends AbstractOwnableModule
 		implements RotationalPositionActuatorModule, RotationalVelocityActuatorModule {
 
 	private final double p;
-	private final EncoderModule encoder;
+	private final LinearPositionSensorModule positionSensor;
+	private final LinearVelocitySensorModule velocitySensor;
 	private final MotorSetModule motors;
 	private final ControllerThread motorController;
 
-	public PLoopMotorControllerModule(String name, LoggerModule logger, double p, EncoderModule encoder,
-			MotorSetModule motors) throws IllegalArgumentException {
-		super(name, new ModuleHashtable<Module>().chainPut(encoder).chainPut(motors), logger);
+	public PLoopMotorControllerModule(String name, LoggerModule logger, double p, LinearPositionSensorModule positionSensor,
+			LinearVelocitySensorModule velocitySensor, MotorSetModule motors) throws IllegalArgumentException {
+		super(name, new ModuleHashtable<Module>().chainPut(positionSensor).chainPut(velocitySensor).chainPut(motors), logger);
 		this.logger.checkInitializationArgs(this, PLoopMotorControllerModule.class,
-				new Object[] { p, encoder, motors });
+				new Object[] { p, positionSensor, velocitySensor, motors });
 		this.p = p;
-		this.encoder = encoder;
+		this.positionSensor = positionSensor;
+		this.velocitySensor = velocitySensor;
 		this.motors = motors;
 		motorController = new ControllerThread();
 		motorController.start();
-		this.logger.logInitialization(this, PLoopMotorControllerModule.class, new Object[] { p, encoder, motors });
+		this.logger.logInitialization(this, PLoopMotorControllerModule.class, new Object[] { p, positionSensor, velocitySensor, motors });
 	}
 
 	@Override
@@ -62,12 +67,12 @@ public class PLoopMotorControllerModule extends AbstractOwnableModule
 			try {
 				while (!this.isInterrupted()) {
 					if (this.isVelocitySetLast) {
-						error = this.setVelocity - encoder.getRotationalPosition();
+						error = this.setVelocity - velocitySensor.getLinearVelocity();
 						double speedIncrease = error / p;
 						double newSpeed = speedIncrease + motors.getSetMotorSpeed();
 						motors.setMotorSpeed(newSpeed);
 					} else {
-						error = this.setPosition - encoder.getRotationalPosition();
+						error = this.setPosition - positionSensor.getLinearPosition();
 						double speed = error / p;
 						motors.setMotorSpeed(speed);
 					}
