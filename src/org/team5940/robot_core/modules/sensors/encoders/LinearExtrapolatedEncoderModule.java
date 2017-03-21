@@ -4,10 +4,10 @@ import org.team5940.robot_core.modules.AbstractModule;
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
-import org.team5940.robot_core.modules.sensors.linear.LinearPositionModule;
-import org.team5940.robot_core.modules.sensors.linear.LinearVelocityModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocityModule;
+import org.team5940.robot_core.modules.sensors.linear.LinearPositionSensorModule;
+import org.team5940.robot_core.modules.sensors.linear.LinearVelocitySensorModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionSensorModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocitySensorModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
@@ -15,14 +15,14 @@ import org.team5940.robot_core.modules.testing.communication.TestCommunicationMo
  * @author David Boles
  *
  */
-public class LinearExtrapolatedEncoderModule extends AbstractModule implements LinearPositionModule, LinearVelocityModule {
+public class LinearExtrapolatedEncoderModule extends AbstractModule implements LinearPositionSensorModule, LinearVelocitySensorModule {
 
 	//TODO docs
-	private final RotationalPositionModule positionSensor;
-	private final RotationalVelocityModule velocitySensor;
+	private final RotationalPositionSensorModule positionSensor;
+	private final RotationalVelocitySensorModule velocitySensor;
 	private final double wheelRadius;
 	
-	public LinearExtrapolatedEncoderModule(String name, LoggerModule logger, RotationalPositionModule positionSensor, RotationalVelocityModule velocitySensor, double wheelRadius)
+	public LinearExtrapolatedEncoderModule(String name, LoggerModule logger, RotationalPositionSensorModule positionSensor, RotationalVelocitySensorModule velocitySensor, double wheelRadius)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<Module>().chainPut(positionSensor).chainPut(velocitySensor), logger);
 		this.logger.checkInitializationArgs(this, LinearExtrapolatedEncoderModule.class, new Object[]{positionSensor, velocitySensor, wheelRadius});
@@ -48,8 +48,8 @@ public class LinearExtrapolatedEncoderModule extends AbstractModule implements L
 
 	@Override
 	public TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
-		TestStatus status = LinearPositionModule.super.runTest(comms);
-		if(status == TestStatus.PASSED) return LinearPositionModule.super.runTest(comms);
+		TestStatus status = LinearPositionSensorModule.super.runTest(comms);
+		if(status == TestStatus.PASSED) return LinearPositionSensorModule.super.runTest(comms);
 		return status;
 	}
 

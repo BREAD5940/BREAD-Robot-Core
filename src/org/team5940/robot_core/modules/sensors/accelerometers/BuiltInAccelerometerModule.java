@@ -1,4 +1,4 @@
-package org.team5940.robot_core.modules.sensors.linear.accelerometers;
+package org.team5940.robot_core.modules.sensors.accelerometers;
 
 import org.team5940.robot_core.modules.AbstractModule;
 import org.team5940.robot_core.modules.ModuleHashtable;

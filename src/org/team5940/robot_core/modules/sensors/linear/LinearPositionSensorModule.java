@@ -1,25 +1,21 @@
-package org.team5940.robot_core.modules.sensors.rotational;
+package org.team5940.robot_core.modules.sensors.linear;
 
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
- * This interface defines a module that can measure a single axis of rotational
- * position. 0 position is undefined.
- * 
+ * This interface defines a module that can measure a single axis of linear position. 0 position is undefined.
  * @author David Boles
  *
  */
-public interface RotationalPositionModule extends Module, TestableModule {
+public interface LinearPositionSensorModule extends Module, TestableModule{
 	/**
-	 * Gets this' rotational position.
-	 * 
-	 * @return This' unbounded rotational position in radians as a double.
+	 * Gets this' linear position.
+	 * @return This' linear position in meters.
 	 */
-	public double getRotationalPosition();
-
-	// TODO test the test
+	public double getLinearPosition();
+	//TODO test the test
 	@Override
 	default TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
 		try {
@@ -27,7 +23,7 @@ public interface RotationalPositionModule extends Module, TestableModule {
 			while(!Thread.interrupted() && run) {
 				long startTime = System.currentTimeMillis();
 				while(startTime + 10000 > System.currentTimeMillis()){
-					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getRotationalPosition());
+					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getLinearPosition());
 				}
 				if(comms.promptBoolean("Is " + this.getModuleName() + " working correctly?")) {
 					//RESET
