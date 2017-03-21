@@ -11,7 +11,6 @@ import org.team5940.robot_core.modules.logging.LoggerModule;
  */
 public class TogglingBinaryInputModule extends AbstractModule implements BinaryInputModule {
 
-	//IF Private works update arm
 	private boolean state;
 	
 	/**
@@ -41,7 +40,11 @@ public class TogglingBinaryInputModule extends AbstractModule implements BinaryI
 		return this.state;
 	}
 	
-	//TODO document
+	/**
+	 * A thread to update the state of a {@link TogglingBinaryInputModule}.
+	 * @author David Boles
+	 *
+	 */
 	private class StateUpdaterThread extends Thread {
 
 		private final LoggerModule logger;

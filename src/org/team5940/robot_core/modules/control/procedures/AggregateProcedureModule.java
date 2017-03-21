@@ -4,13 +4,31 @@ import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.OwnableModule;
 
-//TODO
+/**
+ * An implementation of {@link ProcedureModule} that runs multiple other procedures.
+ * @author David Boles
+ *
+ */
 public class AggregateProcedureModule extends AbstractProcedureModule {
 
+	/**
+	 * Stores the procedures to run.
+	 */
 	private final ModuleHashtable<ProcedureModule> procedures;
+	
+	/**
+	 * Stores whether to force acquisition of procedures and dependencies.
+	 */
 	private final boolean forceAcquisition;
 	
-	//TODO
+	/**
+	 * Initializes a new {@link AggregateProcedureModule}.
+	 * @param name This' name.
+	 * @param logger This' logger.
+	 * @param procedures The procedures to run.
+	 * @param forceAcquisition Whether to force acquisition of procedures and dependencies.
+	 * @throws IllegalArgumentException
+	 */
 	public AggregateProcedureModule(String name, LoggerModule logger, ModuleHashtable<ProcedureModule> procedures, boolean forceAcquisition)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(procedures.values()), logger);

@@ -7,12 +7,31 @@ import org.team5940.robot_core.modules.logging.LoggerModule;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//TODO all docs
+/**
+ * An implementation of {@link SelectorModule} that allows you to select between multiple strings on SmartDashboard. -1 is only returned if there is no selection from SmartDashboard.
+ * @author deb
+ *
+ */
 public class SmartDashboardSelectorModule extends AbstractModule implements SelectorModule {
 
+	/**
+	 * The SendableChooser on the SmartDashboard that this uses to determine its state.
+	 */
 	private final SendableChooser<Integer> chooser;
+	
+	/**
+	 * The number of options there are.
+	 */
 	private final int number;
 	
+	/**
+	 * Initializes a new {@link SmartDashboardSelectorModule}.
+	 * @param name This' name.
+	 * @param logger This' logger.
+	 * @param options The options to select between. Selector states map to the indices of this array.
+	 * @param defaultOption The index of the default option for the SmartDashboard radio buttons.
+	 * @throws IllegalArgumentException Thrown if any argument is null, any option is null, or the defaultOption >= options.
+	 */
 	public SmartDashboardSelectorModule(String name, LoggerModule logger, String[] options, int defaultOption)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger);
