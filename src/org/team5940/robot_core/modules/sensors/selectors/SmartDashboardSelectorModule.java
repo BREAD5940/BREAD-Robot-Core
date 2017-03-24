@@ -29,7 +29,7 @@ public class SmartDashboardSelectorModule extends AbstractModule implements Sele
 			if(i != defaultOption)
 				chooser.addObject(options[i], i);
 		}
-		SmartDashboard.putData("Auto Selector", this.chooser);
+		SmartDashboard.putData(name, this.chooser);
 		logger.logInitialization(this, SmartDashboardSelectorModule.class, new Object[]{options, defaultOption});
 	}
 
