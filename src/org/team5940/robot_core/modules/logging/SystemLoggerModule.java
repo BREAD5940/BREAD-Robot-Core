@@ -42,12 +42,12 @@ public class SystemLoggerModule extends AbstractLoggerModule {
 	}
 
 	@Override
-	protected void log(String log) {
+	protected synchronized void log(String log) {
 		System.out.println(log);
 	}
 
 	@Override
-	protected void error(String error) {
+	protected synchronized void error(String error) {
 		System.err.println(error);
 	}
 

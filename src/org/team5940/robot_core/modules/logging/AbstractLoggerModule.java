@@ -107,6 +107,11 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 				l.setEnabled(e);
 			}
 			
+		}else if(o instanceof Thread) {
+			Thread t = (Thread) o;
+			out += t.getName();
+			if(!t.getClass().isAnonymousClass()) out += ": " + t.getClass().getSimpleName();
+			
 		}else if(o instanceof ModuleHashtable) {
 			for(Module i : ((ModuleHashtable<?>) o).values()) {
 				out += this.getStamp(i);
@@ -142,49 +147,49 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 
 	@Override
 	public synchronized void log(Module module, String log) {
-		if(this.enabled) this.log(this.getTimestamp() + this.getStamp(module) + this.getStamp(log));
+		if(this.enabled) this.log(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(log));
 		
 	}
 
 	@Override
 	public synchronized void log(Module module, String title, Object content) {
-		if(this.enabled) this.log(this.getTimestamp() + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
+		if(this.enabled) this.log(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
 		
 	}
 
 	@Override
 	public synchronized void vLog(Module module, String log) {
-		if(this.enabled && this.verbose) this.log(this.getTimestamp() + this.getStamp(module) + this.getStamp(log));
+		if(this.enabled && this.verbose) this.log(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(log));
 		
 	}
 
 	@Override
 	public synchronized void vLog(Module module, String title, Object content) {
-		if(this.enabled && this.verbose) this.log(this.getTimestamp() + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
+		if(this.enabled && this.verbose) this.log(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
 		
 	}
 
 	@Override
 	public synchronized void error(Module module, String log) {
-		if(this.enabled) this.error(this.getTimestamp() + this.getStamp(module) + this.getStamp(log));
+		if(this.enabled) this.error(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(log));
 		
 	}
 
 	@Override
 	public synchronized void error(Module module, String title, Object content) {
-		if(this.enabled) this.error(this.getTimestamp() + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
+		if(this.enabled) this.error(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
 		
 	}
 
 	@Override
 	public synchronized void vError(Module module, String log) {
-		if(this.enabled && this.verbose) this.error(this.getTimestamp() + this.getStamp(module) + this.getStamp(log));
+		if(this.enabled && this.verbose) this.error(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(log));
 		
 	}
 
 	@Override
 	public synchronized void vError(Module module, String title, Object content) {
-		if(this.enabled && this.verbose) this.error(this.getTimestamp() + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
+		if(this.enabled && this.verbose) this.error(this.getTimestamp() + this.getStamp(Thread.currentThread()) + this.getStamp(module) + this.getStamp(title) + this.getStamp(content));
 		
 	}
 

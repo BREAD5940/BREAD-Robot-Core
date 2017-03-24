@@ -121,7 +121,7 @@ public interface LoggerModule extends Module {
 	 * @see LoggerModule#logInitialization(Module, Class, Object)
 	 */
 	public default void logInitialization(Module module, Class<? extends Module> constructorClass) {
-		this.log(module, "Initialized " + constructorClass.getSimpleName());
+		this.log(module, "Initialized", constructorClass.getSimpleName());
 	}
 	
 	/**
@@ -132,7 +132,7 @@ public interface LoggerModule extends Module {
 	 * @see LoggerModule#logInitialization(Module, Class)
 	 */
 	public default void logInitialization(Module module, Class<? extends Module> constructorClass, Object args) {
-		this.log(module, "Initialized " + constructorClass.getSimpleName(), args);
+		this.log(module, "Initialized", new Object[]{constructorClass.getSimpleName(), args});
 	}
 	
 	//INITIALIZATION CHECKING

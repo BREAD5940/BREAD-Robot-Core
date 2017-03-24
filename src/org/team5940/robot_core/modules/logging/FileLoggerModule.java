@@ -31,11 +31,10 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File loggerFile) throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger, verbose, enabled);
 		this.logger.checkInitializationArgs(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
-//		loggerFile.delete();
+		loggerFile.getParentFile().mkdirs();
 		try {
 			loggerFile.createNewFile();
 		}catch(IOException e) {
-			//this.logger.failInitializationIllegal(this, FileLoggerModule.class, "Unable To Create Given Files", new Object[] { verbose, enabled, loggerFile });
 			this.logger.error(this, "Unable To Create File", loggerFile);
 		}
 		this.loggerFile = loggerFile;
@@ -54,7 +53,7 @@ public class FileLoggerModule extends AbstractLoggerModule {
 
 
 	@Override
-	protected void log(String log) {
+	protected synchronized void log(String log) {
 		log += "\n";
 		try {
 			FileOutputStream outputStream = new FileOutputStream(this.loggerFile, true);
@@ -67,7 +66,7 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	}
 
 	@Override
-	protected void error(String error) {
+	protected synchronized void error(String error) {
 		error += "\n";
 		try {
 			FileOutputStream outputStream = new FileOutputStream(this.loggerFile, true);
