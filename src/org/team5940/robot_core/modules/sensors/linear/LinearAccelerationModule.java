@@ -1,25 +1,22 @@
-package org.team5940.robot_core.modules.sensors.rotational;
+package org.team5940.robot_core.modules.sensors.linear;
 
 import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
- * This interface defines a module that can measure a single axis of rotational
- * velocity.
- * 
+ * This interface defines a module that can measure a single axis of linear acceleration.
  * @author David Boles
  *
  */
-public interface RotationalVelocitySensorModule extends Module, TestableModule {
+public interface LinearAccelerationModule extends Module, TestableModule{
 	/**
-	 * Gets this' rotational velocity.
-	 * 
-	 * @return This' rotational velocity in revolutions per second as a double.
+	 * Gets this' linear velocity.
+	 * @return This' linear velocity in meters per second^2 as a double.
 	 */
-	public double getRotationalVelocity();
-
-	// TODO test the test
+	public double getLinearAcceleration();
+	
+	//TODO test the test
 	@Override
 	default TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
 		try {
@@ -27,7 +24,7 @@ public interface RotationalVelocitySensorModule extends Module, TestableModule {
 			while(!Thread.interrupted() && run) {
 				long startTime = System.currentTimeMillis();
 				while(startTime + 10000 > System.currentTimeMillis()){
-					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getRotationalVelocity());
+					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getLinearAcceleration());
 				}
 				if(comms.promptBoolean("Is " + this.getModuleName() + " working correctly?")) {
 					//RESET

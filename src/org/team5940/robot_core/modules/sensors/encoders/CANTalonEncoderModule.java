@@ -3,19 +3,19 @@ package org.team5940.robot_core.modules.sensors.encoders;
 import org.team5940.robot_core.modules.AbstractModule;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionSensorModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocitySensorModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocityModule;
 import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 import com.ctre.CANTalon;
 
 /**
- * An implementation of {@link RotationalPositionSensorModule} and {@link RotationalVelocitySensorModule}.
+ * An implementation of {@link RotationalPositionModule} and {@link RotationalVelocityModule}.
  * 
  * @author Amit Harlev + Noah Sturgeon + Alex Loeffler + David Boles
  */
-public class CANTalonEncoderModule extends AbstractModule implements RotationalPositionSensorModule, RotationalVelocitySensorModule, TestableModule {//TODO hasn't been tested
+public class CANTalonEncoderModule extends AbstractModule implements RotationalPositionModule, RotationalVelocityModule, TestableModule {//TODO hasn't been tested
 
 	/** 
 	 * The talon this encoder is on.
@@ -66,9 +66,9 @@ public class CANTalonEncoderModule extends AbstractModule implements RotationalP
 
 	@Override
 	public TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
-		TestStatus position = RotationalPositionSensorModule.super.runTest(comms);
+		TestStatus position = RotationalPositionModule.super.runTest(comms);
 		if(position == TestStatus.PASSED)
-				return RotationalVelocitySensorModule.super.runTest(comms);
+				return RotationalVelocityModule.super.runTest(comms);
 		return position;
 	}
 

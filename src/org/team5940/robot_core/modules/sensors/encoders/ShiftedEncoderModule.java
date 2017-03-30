@@ -5,8 +5,8 @@ import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.actuators.shifters.ShifterModule;
 import org.team5940.robot_core.modules.logging.LoggerModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionSensorModule;
-import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocitySensorModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalPositionModule;
+import org.team5940.robot_core.modules.sensors.rotational.RotationalVelocityModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
@@ -15,15 +15,15 @@ import org.team5940.robot_core.modules.testing.communication.TestCommunicationMo
  *
  */
 public class ShiftedEncoderModule extends AbstractModule
-		implements RotationalPositionSensorModule, RotationalVelocitySensorModule {
+		implements RotationalPositionModule, RotationalVelocityModule {
 
 	//TODO docs
 	private final ShifterModule shifter;
 	private final double[] scalers;
-	private final RotationalPositionSensorModule positionSensor;
-	private final RotationalVelocitySensorModule velocitySensor;
+	private final RotationalPositionModule positionSensor;
+	private final RotationalVelocityModule velocitySensor;
 	
-	public ShiftedEncoderModule(String name, LoggerModule logger, ShifterModule shifter, double[] scalers, RotationalPositionSensorModule positionSensor, RotationalVelocitySensorModule velocitySensor)
+	public ShiftedEncoderModule(String name, LoggerModule logger, ShifterModule shifter, double[] scalers, RotationalPositionModule positionSensor, RotationalVelocityModule velocitySensor)
 			throws IllegalArgumentException {
 		super(name, new ModuleHashtable<Module>().chainPut(shifter).chainPut(positionSensor).chainPut(velocitySensor), logger);
 		this.logger.checkInitializationArgs(this, ShiftedEncoderModule.class, new Object[]{shifter, scalers, positionSensor, velocitySensor});
@@ -52,8 +52,8 @@ public class ShiftedEncoderModule extends AbstractModule
 
 	@Override
 	public TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
-		TestStatus status = RotationalPositionSensorModule.super.runTest(comms);
-		if(status == TestStatus.PASSED) return RotationalPositionSensorModule.super.runTest(comms);
+		TestStatus status = RotationalPositionModule.super.runTest(comms);
+		if(status == TestStatus.PASSED) return RotationalPositionModule.super.runTest(comms);
 		return status;
 	}
 

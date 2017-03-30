@@ -3,7 +3,7 @@ package org.team5940.robot_core.modules.sensors.linear.accelerometers;
 import org.team5940.robot_core.modules.AbstractModule;
 import org.team5940.robot_core.modules.ModuleHashtable;
 import org.team5940.robot_core.modules.logging.LoggerModule;
-import org.team5940.robot_core.modules.sensors.linear.LinearAccelerationSensorModule;
+import org.team5940.robot_core.modules.sensors.linear.LinearAccelerationModule;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 
@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
  * @author David Boles
  *
  */
-public class BuiltInAccelerometerModule extends AbstractModule implements LinearAccelerationSensorModule {
+public class BuiltInAccelerometerModule extends AbstractModule implements LinearAccelerationModule {
 
 	/**
 	 * Stores the axis that this gets.

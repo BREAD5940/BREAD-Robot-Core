@@ -5,17 +5,17 @@ import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
- * This interface defines a module that can measure a single axis of linear velocity.
+ * This interface defines a module that can measure a single axis of linear position. 0 position is undefined.
  * @author David Boles
  *
  */
-public interface LinearVelocitySensorModule extends Module, TestableModule{
+public interface LinearPositionModule extends Module, TestableModule{
 	/**
-	 * Gets this' linear velocity.
-	 * @return This' linear velocity in meters per second as a double.
+	 * Gets this' linear position.
+	 * @return This' linear position in meters.
 	 */
-	public double getLinearVelocity();
-	//TODO Test the Test
+	public double getLinearPosition();
+	//TODO test the test
 	@Override
 	default TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
 		try {
@@ -23,7 +23,7 @@ public interface LinearVelocitySensorModule extends Module, TestableModule{
 			while(!Thread.interrupted() && run) {
 				long startTime = System.currentTimeMillis();
 				while(startTime + 10000 > System.currentTimeMillis()){
-					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getLinearVelocity());
+					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getLinearPosition());
 				}
 				if(comms.promptBoolean("Is " + this.getModuleName() + " working correctly?")) {
 					//RESET

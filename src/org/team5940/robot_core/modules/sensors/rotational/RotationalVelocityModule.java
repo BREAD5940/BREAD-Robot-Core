@@ -5,18 +5,21 @@ import org.team5940.robot_core.modules.testing.TestableModule;
 import org.team5940.robot_core.modules.testing.communication.TestCommunicationModule;
 
 /**
- * This interface defines a module that can measure a single axis of rotational acceleration.
+ * This interface defines a module that can measure a single axis of rotational
+ * velocity.
+ * 
  * @author David Boles
  *
  */
-public interface RotationalAccelerationSensorModule extends Module, TestableModule {
+public interface RotationalVelocityModule extends Module, TestableModule {
 	/**
 	 * Gets this' rotational velocity.
-	 * @return This' rotational velocity in revolutions per second^2 as a double.
+	 * 
+	 * @return This' rotational velocity in revolutions per second as a double.
 	 */
-	public double getRotationalAcceleration();
-	
-	//TODO test the test
+	public double getRotationalVelocity();
+
+	// TODO test the test
 	@Override
 	default TestStatus runTest(TestCommunicationModule comms) throws IllegalArgumentException {
 		try {
@@ -24,7 +27,7 @@ public interface RotationalAccelerationSensorModule extends Module, TestableModu
 			while(!Thread.interrupted() && run) {
 				long startTime = System.currentTimeMillis();
 				while(startTime + 10000 > System.currentTimeMillis()){
-					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getRotationalAcceleration());
+					comms.displayText("Current state of " + this.getModuleName() + ": " + this.getRotationalVelocity());
 				}
 				if(comms.promptBoolean("Is " + this.getModuleName() + " working correctly?")) {
 					//RESET
