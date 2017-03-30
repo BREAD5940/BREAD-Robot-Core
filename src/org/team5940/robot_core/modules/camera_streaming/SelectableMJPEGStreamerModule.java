@@ -115,6 +115,7 @@ public class SelectableMJPEGStreamerModule extends AbstractProcedureModule {
 		for (MatProcessorModule processor : this.processors)
 			frame = processor.processMat(frame);
 		this.output.putFrame(frame);
+		frame.release();
 		
 		return false;
 	}
