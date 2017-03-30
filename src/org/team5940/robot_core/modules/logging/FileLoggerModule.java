@@ -32,6 +32,7 @@ public class FileLoggerModule extends AbstractLoggerModule {
 		super(name, new ModuleHashtable<>(), logger, verbose, enabled);
 		this.logger.checkInitializationArgs(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
 //		loggerFile.delete();
+		loggerFile.getParentFile().mkdirs();
 		try {
 			loggerFile.createNewFile();
 		}catch(IOException e) {
