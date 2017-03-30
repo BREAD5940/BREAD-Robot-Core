@@ -14,6 +14,11 @@ import org.team5940.robot_core.modules.ModuleHashtable;
  *
  */
 public abstract class AbstractLoggerModule extends AbstractModule implements LoggerModule {
+	
+	/**
+	 * Stores the time in ms when this was initialized. Serves to start logging at timestamp 0.
+	 */
+	private final long initializationTime;
 
 	/**
 	 * Stores this' verbosity.
@@ -38,6 +43,7 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 		super(name, subModules, logger);
 		this.verbose = verbose;
 		this.enabled = enabled;
+		this.initializationTime = System.currentTimeMillis();
 		this.logger.logInitialization(this, AbstractLoggerModule.class, verbose);
 	}
 	
@@ -82,7 +88,7 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 	 * @return The current timestamp.
 	 */
 	private String getTimestamp() {
-		return "<" + System.currentTimeMillis() + ">";
+		return getStamp(System.currentTimeMillis() - this.initializationTime);
 	}
 	
 	/**
