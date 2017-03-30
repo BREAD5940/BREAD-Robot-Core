@@ -8,8 +8,7 @@ import org.team5940.robot_core.modules.ModuleHashtable;
 
 public class FileLoggerModule extends AbstractLoggerModule {
 
-	File standardLoggerFile;
-	File errorLoggerFile;
+	File loggerFile;
 
 	/**
 	 * Initializes a new FileLoggerModule.
@@ -29,77 +28,36 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	 * @throws IllegalArgumentException
 	 *             Thrown if any argument is null
 	 */
-	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File standardLoggerFile,
-			File errorLoggerFile) throws IllegalArgumentException {
+	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File loggerFile) throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger, verbose, enabled);
-		errorLoggerFile.delete();
-		standardLoggerFile.delete();
+		this.logger.checkInitializationArgs(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
+//		loggerFile.delete();
 		try {
-			errorLoggerFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			loggerFile.createNewFile();
+		}catch(IOException e) {
+			//this.logger.failInitializationIllegal(this, FileLoggerModule.class, "Unable To Create Given Files", new Object[] { verbose, enabled, loggerFile });
+			this.logger.error(this, "Unable To Create File", loggerFile);
 		}
-
-		try {
-			standardLoggerFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.standardLoggerFile = standardLoggerFile;
-		this.errorLoggerFile = errorLoggerFile;
-		this.logger.logInitialization(this, FileLoggerModule.class, new Object[] { verbose, enabled });
+		this.loggerFile = loggerFile;
+		this.logger.logInitialization(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
 	}
 
-	/**
-	 * Initializes a new FileLoggerModule with an inert logger.
-	 */
-	public FileLoggerModule(String name, boolean verbose, boolean enabled, File standardLoggerFile,
-			File errorLoggerFile) throws IllegalArgumentException {
-		this(name, LoggerModule.INERT_LOGGER, verbose, enabled, standardLoggerFile, errorLoggerFile);
-	}
 
 	/**
 	 * Initializes a new SystemLoggerModule that's enabled and not verbose with
 	 * an inert logger.
 	 */
-	public FileLoggerModule(String name, File standardLoggerFile, File errorLoggerFile)
+	public FileLoggerModule(String name, File loggerFile)
 			throws IllegalArgumentException {
-		this(name, LoggerModule.INERT_LOGGER, false, true, standardLoggerFile, errorLoggerFile);
+		this(name, LoggerModule.INERT_LOGGER, false, true, loggerFile);
 	}
 
-	/**
-	 * Initializes a new SystemLoggerModule without an ErrorLoggerFile. Errors
-	 * will be saved to the StandardLoggerFile.
-	 */
-	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File standardLoggerFile)
-			throws IllegalArgumentException {
-		this(name, logger, verbose, enabled, standardLoggerFile, standardLoggerFile);
-	}
-
-	/**
-	 * Initializes a new SystemLoggerModule with an inert logger. Errors will be
-	 * saved to the StandardLoggerFile.
-	 */
-	public FileLoggerModule(String name, boolean verbose, boolean enabled, File standardLoggerFile)
-			throws IllegalArgumentException {
-		this(name, LoggerModule.INERT_LOGGER, verbose, enabled, standardLoggerFile);
-	}
-
-	/**
-	 * Initializes a new SystemLoggerModule that's enabled and not verbose with
-	 * an inert logger. Errors will be saved to the StandardLoggerFile.
-	 */
-	public FileLoggerModule(String name, File standardLoggerFile) throws IllegalArgumentException {
-		this(name, LoggerModule.INERT_LOGGER, false, true, standardLoggerFile);
-	}
 
 	@Override
 	protected void log(String log) {
 		log += "\n";
 		try {
-			FileOutputStream outputStream = new FileOutputStream(this.standardLoggerFile, true);
+			FileOutputStream outputStream = new FileOutputStream(this.loggerFile, true);
 			outputStream.write(log.getBytes());
 			outputStream.flush();
 			outputStream.close();
@@ -112,7 +70,7 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	protected void error(String error) {
 		error += "\n";
 		try {
-			FileOutputStream outputStream = new FileOutputStream(this.errorLoggerFile, true);
+			FileOutputStream outputStream = new FileOutputStream(this.loggerFile, true);
 			outputStream.write(error.getBytes());
 			outputStream.flush();
 			outputStream.close();

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
  * @author David Boles
  *
  */
-public class SmartHIDAxisModule extends HIDAxisModule {
+public class ConfigurableHIDAxisModule extends HIDAxisModule {
 	
 	/**
 	 * Stores this' dead zone.
@@ -22,7 +22,7 @@ public class SmartHIDAxisModule extends HIDAxisModule {
 	private final double exponent;
 	
 	/**
-	 * Initializes a new {@link SmartHIDAxisModule}.
+	 * Initializes a new {@link ConfigurableHIDAxisModule}.
 	 * @param name This' name.
 	 * @param logger This' logger.
 	 * @param device The GenericHID to access this axis from.
@@ -32,28 +32,27 @@ public class SmartHIDAxisModule extends HIDAxisModule {
 	 * @param exponent The exponent to raise the input to for non-linear control.
 	 * @throws IllegalArgumentException Thrown if any argument is null or deadZone is out of bounds.
 	 */
-	public SmartHIDAxisModule(String name, LoggerModule logger, GenericHID device, int axis, boolean invert, double deadZone, double exponent)
+	public ConfigurableHIDAxisModule(String name, LoggerModule logger, GenericHID device, int axis, boolean invert, double deadZone, double exponent)
 			throws IllegalArgumentException {
 		super(name, logger, device, axis, invert);
 		if(deadZone > 1 || deadZone < -1)
-			this.logger.failInitializationIllegal(this, SmartHIDAxisModule.class, "Out Of Bounds Dead Zone", deadZone);
+			this.logger.failInitializationIllegal(this, ConfigurableHIDAxisModule.class, "Out Of Bounds Dead Zone", deadZone);
 		this.deadZone = deadZone;
 		this.exponent = exponent;
-		this.logger.logInitialization(this, SmartHIDAxisModule.class, new Object[]{deadZone, exponent});
+		this.logger.logInitialization(this, ConfigurableHIDAxisModule.class, new Object[]{deadZone, exponent});
 	}
 
 	@Override
 	public synchronized double getAxis() {
 		boolean enabled = logger.isEnabled();
 		logger.setEnabled(false);
-		double out = super.getAxis();
+		double superAxis = super.getAxis();
 		logger.setEnabled(enabled);
 		
-		if(Math.abs(out) <= this.deadZone) out = 0;
-		
-		double pos = 1;
-		if(out < 1) pos = -1;
-		out = pos * Math.pow(Math.abs(out), this.exponent);
+		double absSuper = Math.abs(superAxis);
+		double out = 0;
+		if(absSuper > this.deadZone)
+			out = (superAxis > 0) ? Math.pow((1/(1-this.deadZone))*(absSuper-this.deadZone), this.exponent) : (-1 * Math.pow((1/(1-this.deadZone))*(absSuper-this.deadZone), this.exponent));
 		
 		logger.logGot(this, "Axis", out);
 		return out;

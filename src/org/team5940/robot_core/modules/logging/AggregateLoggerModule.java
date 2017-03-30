@@ -5,7 +5,7 @@ import org.team5940.robot_core.modules.Module;
 import org.team5940.robot_core.modules.ModuleHashtable;
 
 /**
- * An implementation of {@link LoggerModule} that simply passes logging calls to up to four other loggers.
+ * An implementation of {@link LoggerModule} that simply passes logging calls to up to four other loggers depending on what type of log is being made.
  * @author Amit Harlev
  *
  */
@@ -135,35 +135,35 @@ public class AggregateLoggerModule extends AbstractModule implements LoggerModul
 
 	@Override
 	public void vLog(Module module, String log) {
-		if(this.enabled && this.verbose) this.verboseLogger.log(module, log);
+		if(this.enabled && this.verbose) this.verboseLogger.vLog(module, log);
 
 	}
 
 	@Override
 	public void vLog(Module module, String title, Object content) {
-		if(this.enabled && this.verbose) this.verboseLogger.log(module, title, content);
+		if(this.enabled && this.verbose) this.verboseLogger.vLog(module, title, content);
 
 	}
 
 	@Override
 	public void error(Module module, String log) {
-		if(this.enabled) this.standardErrorLogger.log(module, log);
+		if(this.enabled) this.standardErrorLogger.error(module, log);
 
 	}
 
 	@Override
 	public void error(Module module, String title, Object content) {
-		if(this.enabled) this.standardErrorLogger.log(module, title, content);
+		if(this.enabled) this.standardErrorLogger.error(module, title, content);
 	}
 
 	@Override
 	public void vError(Module module, String log) {
-		if(this.enabled && this.verbose) this.verboseErrorLogger.log(module, log);
+		if(this.enabled && this.verbose) this.verboseErrorLogger.vError(module, log);
 	}
 
 	@Override
 	public void vError(Module module, String title, Object content) {
-		if(this.enabled && this.verbose) this.verboseErrorLogger.log(module, title, content);
+		if(this.enabled && this.verbose) this.verboseErrorLogger.vError(module, title, content);
 	}
 
 }

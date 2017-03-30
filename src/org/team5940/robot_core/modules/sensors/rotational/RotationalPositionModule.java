@@ -15,8 +15,7 @@ public interface RotationalPositionModule extends Module, TestableModule {
 	/**
 	 * Gets this' rotational position.
 	 * 
-	 * @return This' rotational position in radians as a double bounded to 0
-	 *         inclusive and tau (2pi) exclusive.
+	 * @return This' unbounded rotational position in radians as a double.
 	 */
 	public double getRotationalPosition();
 

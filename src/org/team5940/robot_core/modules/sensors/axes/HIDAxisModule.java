@@ -41,7 +41,7 @@ public class HIDAxisModule extends AbstractModule implements AxisModule {
 
 	@Override
 	public synchronized double getAxis() {
-		double out = invert ? this.input.getRawAxis(this.axis) : (this.input.getRawAxis(this.axis) * -1);
+		double out = invert ? this.input.getRawAxis(this.axis) * -1 : (this.input.getRawAxis(this.axis));
 		this.logger.logGot(this, "Axis", out);
 		return out;
 	}

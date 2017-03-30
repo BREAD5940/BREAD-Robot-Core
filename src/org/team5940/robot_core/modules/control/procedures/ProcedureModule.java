@@ -14,7 +14,7 @@ import org.team5940.robot_core.modules.ownable.ThreadUnauthorizedException;
 public interface ProcedureModule extends OwnableModule, Runnable {
 	
 	/**
-	 * Runs this gently (force = false).
+	 * Runs this gently (force = false) using {@link ProcedureModule#run(boolean)}.
 	 * @see ProcedureModule#run(boolean)
 	 */
 	@Override
@@ -23,11 +23,26 @@ public interface ProcedureModule extends OwnableModule, Runnable {
 	}
 	
 	/**
-	 * Acquires this and this' extended dependencies, then runs the procedure to completion or premature, external clean. Catches any exceptions internally.
-	 * @param forceAcquisition Whether to force acquisition of this and this' extended dependencies.
+	 * Runs this with a 50ms delay.
+	 * @see ProcedureModule#run(boolean, long)
 	 */
 	default void run(boolean forceAcquisition) {
-		this.getModuleLogger().log(this, "Running", forceAcquisition);
+		this.run(forceAcquisition, 50);
+	}
+	
+	/**
+	 * Acquires this and this' extended dependencies, then runs the procedure to completion or premature, external clean. Catches any exceptions internally.
+	 * @param forceAcquisition Whether to force acquisition of this and this' extended dependencies.
+	 * @param delay The number of milliseconds to wait between calls to updateProcedure() while running.
+	 */
+	default void run(boolean forceAcquisition, long delay) {
+		this.getModuleLogger().log(this, "Running", new Object[]{forceAcquisition, delay});
+		
+		if(delay < 0) {
+			delay = 0;
+			this.getModuleLogger().vLog(this, "Negative Delay, Using 0", delay);
+		}
+		
 		try {
 			this.getModuleLogger().vLog(this, "Acquiring This", this.acquireOwnershipForCurrent(forceAcquisition));
 			for(OwnableModule dep : this.getExtendedModuleDependencies().getAssignableTo(OwnableModule.class).values())
@@ -41,7 +56,7 @@ public interface ProcedureModule extends OwnableModule, Runnable {
 				done = this.updateProcedure();
 				this.getModuleLogger().vLog(this, "Updated", done);
 				
-				Thread.sleep(50);
+				Thread.sleep(delay);
 			}
 		}catch(Exception e) {
 			this.getModuleLogger().error(this, "Exception Caught While Running", e);
@@ -100,7 +115,7 @@ public interface ProcedureModule extends OwnableModule, Runnable {
 		
 		@Override
 		public ModuleHashtable<Module> getModuleDependencies() {
-			return new ModuleHashtable<>();
+			return new ModuleHashtable<>(LoggerModule.INERT_LOGGER);
 		}
 		
 		@Override

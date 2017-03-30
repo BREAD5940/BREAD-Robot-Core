@@ -1,7 +1,7 @@
 package org.team5940.robot_core.modules;
 
 import org.team5940.robot_core.modules.control.procedures.ProcedureModule;
-import org.team5940.robot_core.modules.control.procedures.SelectableProcedureRunnerModule;
+import org.team5940.robot_core.modules.control.procedures.ContinuousSelectableProcedureModule;
 import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.sensors.selectors.RobotStateSelectorModule;
 import org.team5940.robot_core.modules.sensors.selectors.SelectorModule;
@@ -52,6 +52,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 			this.initializeRobotModules();
 			this.robotModulesInitialized = true;
 			this.dependencies.put(this.robotProcedure);
+			this.dependencies.put(this.logger);
 			HAL.observeUserProgramStarting();
 			this.logger.log(this, "Module Initialization Complete, Running Procedure", this.robotProcedure);
 			this.robotProcedure.run(true);
@@ -84,7 +85,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 	}
 	
 	/**
-	 * Sets the robot's procedure to a new {@link SelectableProcedureRunnerModule} named "robot_procedure" with logger, your procedures, forced dependency acquisition, and a new {@link RobotStateSelectorModule} named "robot_selector" with logger.
+	 * Sets the robot's procedure to a new {@link ContinuousSelectableProcedureModule} named "robot_procedure" with logger, your procedures, forced dependency acquisition, and a new {@link RobotStateSelectorModule} named "robot_selector" with logger.
 	 * @param logger The logger you want the new created procedure and selector to use.
 	 * @param disabled The procedure to run when the robot is disabled.
 	 * @param auto The procedure to run when the robot is in auto.
@@ -103,7 +104,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 		if(!this.robotModulesInitialized) {
 			this.logger.log(this, "Creating Robot Procedure", new Object[]{logger, disabled,  procedures});
 			SelectorModule selector = new RobotStateSelectorModule("robot_selector", logger, this);
-			ProcedureModule procedure = new SelectableProcedureRunnerModule("robot_procedure", logger, selector, disabled, procedures, true);
+			ProcedureModule procedure = new ContinuousSelectableProcedureModule("robot_procedure", logger, selector, disabled, procedures, true);
 			this.setRobotProcedure(procedure);
 		}else {
 			this.logger.error(this, "Creating Robot Procedure When Initialization Complete", new Object[]{this.dependencies.get("robot_procedure"), logger, disabled,  procedures});
@@ -122,6 +123,7 @@ public abstract class RobotModule extends RobotBase implements Module {
 		if(this.robotModulesInitialized)
 			this.logger.failSettingIllegal(this, "Robot Procedure", "Initialization Complete", logger);
 		this.logger.checkAndLogSettingArg(this, "Robot Logger", logger);
+		this.logger = logger;
 	}
 	
 	//MODULE STUFF
