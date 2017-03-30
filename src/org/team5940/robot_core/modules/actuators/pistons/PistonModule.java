@@ -1,5 +1,8 @@
 package org.team5940.robot_core.modules.actuators.pistons;
 
+import org.team5940.robot_core.modules.Module;
+import org.team5940.robot_core.modules.ModuleHashtable;
+import org.team5940.robot_core.modules.logging.LoggerModule;
 import org.team5940.robot_core.modules.ownable.OwnableModule;
 import org.team5940.robot_core.modules.ownable.ThreadUnauthorizedException;
 import org.team5940.robot_core.modules.testing.TestableModule;
@@ -63,4 +66,46 @@ public interface PistonModule extends OwnableModule, TestableModule {
 		}
 		
 	}
+	
+	/**
+	 * A piston that does nothing named "inert_piston". Always owned and state is always false ("contracted").
+	 */
+	public static final PistonModule INERT_PISTON = new PistonModule() {
+		
+		@Override
+		public String getModuleName() {
+			return "inert_piston";
+		}
+		
+		@Override
+		public LoggerModule getModuleLogger() {
+			return LoggerModule.INERT_LOGGER;
+		}
+		
+		@Override
+		public ModuleHashtable<Module> getModuleDependencies() {
+			return new ModuleHashtable<>();
+		}
+		
+		@Override
+		public void relinquishOwnershipFor(Thread t) throws IllegalArgumentException { }
+		
+		@Override
+		public boolean isOwnedBy(Thread t) {
+			return true;
+		}
+		
+		@Override
+		public boolean acquireOwnershipFor(Thread t, boolean force) {
+			return false;
+		}
+		
+		@Override
+		public void setPistonState(boolean state) throws ThreadUnauthorizedException { }
+		
+		@Override
+		public boolean getPistonState() {
+			return false;
+		}
+	};
 }
