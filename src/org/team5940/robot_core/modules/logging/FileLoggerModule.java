@@ -31,8 +31,8 @@ public class FileLoggerModule extends AbstractLoggerModule {
 	public FileLoggerModule(String name, LoggerModule logger, boolean verbose, boolean enabled, File loggerFile) throws IllegalArgumentException {
 		super(name, new ModuleHashtable<>(), logger, verbose, enabled);
 		this.logger.checkInitializationArgs(this, FileLoggerModule.class, new Object[] { verbose, enabled, loggerFile });
-		loggerFile.getParentFile().mkdirs();
 		try {
+			loggerFile.getParentFile().mkdirs();
 			loggerFile.createNewFile();
 		}catch(IOException e) {
 			this.logger.error(this, "Unable To Create File", loggerFile);
@@ -60,8 +60,8 @@ public class FileLoggerModule extends AbstractLoggerModule {
 			outputStream.write(log.getBytes());
 			outputStream.flush();
 			outputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			//e.printStackTrace();
 		}
 	}
 
@@ -73,8 +73,8 @@ public class FileLoggerModule extends AbstractLoggerModule {
 			outputStream.write(error.getBytes());
 			outputStream.flush();
 			outputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			//e.printStackTrace();
 		}
 	}
 

@@ -102,6 +102,10 @@ public abstract class AbstractLoggerModule extends AbstractModule implements Log
 		if(o==null) {
 			out += "null";
 			
+		}else if(o instanceof Boolean) {
+			Boolean b = (Boolean) o;
+			out+= b ? 1 : 0;
+			
 		}else if(o instanceof Module) {
 			Module c = (Module) o;
 			LoggerModule l = c.getModuleLogger();
